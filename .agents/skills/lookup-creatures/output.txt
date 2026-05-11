@@ -1,0 +1,34 @@
+Found 1 creature(s) matching 18000.0 XP (±20%):
+
+---
+
+# Adult Red Dragon
+
+***Eldest of red dragons, a tyrant of flame and devastation. Legendary in scale and power.***
+
+*Huge Dragon, Chaotic Evil*
+
+**Armor Class** 19
+
+**Hit Points** 256
+
+---
+
+**Speed** 40 ft., climb 40 ft., fly 80 ft.
+
+| STR | DEX | CON | INT | WIS | CHA |
+|:---:|:---:|:---:|:---:|:---:|:---:|
+| 27 | 10 | 25 | 16 | 13 | 21 |
+
+---
+
+**Saving Throws** DEX +6, CON +13, WIS +7, CHA +11
+
+**Skills** Perception +13, Stealth +6
+
+**Challenge** 17 (18000 XP)
+
+---
+
+
+
