@@ -1,105 +1,38 @@
 ---
 name: lookup-creatures
-description: A skill that looks up creatures from D&D 5e based on XP values. Useful for finding appropriate monsters to build encounters with specific XP budgets.
+description: A skill that looks up creatures from D&D 5e based on criteria. Useful for finding appropriate monsters to build encounters.
 ---
 
 # Lookup Creatures
 
-This skill allows you to find appropriate creatures in D&D 5e based on their XP values. It's designed to work in conjunction with the **calculate-xp-threshold** skill.
+This skill is used for finding thematic and level-appropriate monsters. It supports a two-phase workflow: **Discovery** (finding candidates) and **Detail** (retrieving full statblocks).
 
-## Step 1: Get Target XP Value
+## Phase 1: Discovery (Thematic Search)
 
-**If the target XP value is not provided:**
-1. Ask the user: "What is the target XP value for the creature(s) you're looking for?"
-2. Wait for the user's response and store it as `target_xp`.
+Use this to find a "menu" of potential monsters based on theme, environment, and XP budget. By default, it returns a compact summary table.
 
-**If the target XP value is provided:**
-1. Store the provided target XP value as `target_xp`.
+### Filter Parameters:
+- `--target-xp`: Optional. Find creatures near this XP value.
+- `--types`: Comma-separated list (e.g., "Undead, Monstrosity")
+- `--environments`: Comma-separated list (e.g., "Forest, Swamp")
+- `--sizes`: Comma-separated (e.g., "Medium, Large")
+- `--max-results`: Default 10.
 
-## Step 2: Get Tolerance (Optional)
+### Example:
+`python3 lookup_creatures.py --environments "Forest" --types "Beast" --target-xp 450`
 
-**If the tolerance is not provided:**
-1. Ask the user: "What tolerance percentage would you like? (default: 20%) This determines how close creatures must be to your target XP."
-2. Wait for the user's response and store it as `tolerance_percent`. If the user doesn't provide a value, use 20.
+## Phase 2: Detail (Get Statblocks)
 
-**If the tolerance is provided:**
-1. Store the provided tolerance as `tolerance_percent`.
+Once you have selected the specific creatures for your encounter, use this to retrieve their full statblocks.
 
-## Step 3: Get Maximum Results (Optional)
+### Specific Parameters:
+- `--names`: Comma-separated list of exact creature names.
+- `--full`: Force output of full Markdown statblocks.
 
-**If the maximum results is not provided:**
-1. Ask the user: "How many creature suggestions would you like? (default: 5)"
-2. Wait for the user's response and store it as `max_results`. If the user doesn't provide a value, use 5.
+### Example:
+`python3 lookup_creatures.py --names "Dire Wolf, Wolf" --full`
 
-**If the maximum results is provided:**
-1. Store the provided maximum results as `max_results`.
-
-## Step 4: Get Additional Filters (Optional)
-
-You can optionally filter results by the following criteria. Ask only if relevant. You can specify multiple filters of the same type to broaden results (OR logic within filter types):
-
-**Size Filter:**
-- Ask: "Would you like to filter by size? (e.g., Small, Medium, Large, Huge). You can specify multiple sizes separated by commas."
-- Store as `sizes`. Leave blank if no preference.
-
-**Type Filter:**
-- Ask: "Would you like to filter by creature type? (e.g., Dragon, Humanoid, Undead, Beast, Monstrosity). You can specify multiple types separated by commas."
-- Store as `creature_types`. Leave blank if no preference.
-
-**Subtype Filter:**
-- Ask: "Would you like to filter by subtype? You can specify multiple subtypes separated by commas."
-- Store as `subtypes`. Leave blank if no preference.
-
-**Group Filter:**
-- Ask: "Would you like to filter by creature group? (e.g., Silver Dragon, Demon, Vampire). You can specify multiple groups separated by commas."
-- Store as `groups`. Leave blank if no preference.
-
-**Environment Filter:**
-- Ask: "Would you like to filter by environment? (e.g., Mountains, Urban, Underdark, Forest, Ocean). You can specify multiple environments separated by commas."
-- Store as `environments`. Leave blank if no preference.
-
-## Step 5: Execute Lookup
-
-Use the `lookup_creatures.py` Python script to search for creatures.
-
-1. Ensure that the `lookup_creatures.py` script is in the same directory as this skill.
-2. Execute (including optional filters if provided):
-```
-python3 lookup_creatures.py --xp-target {target_xp} --tolerance {tolerance_percent} --count {max_results} [--size {size}]... [--type {creature_type}]... [--subtype {subtype}]... [--group {group}]... [--environment {environment}]...
-```
-
-**Note:** Filters can be specified multiple times. For example:
-- `--environment Ocean --environment Coastal` - searches for creatures in Ocean OR Coastal environments
-- `--type Dragon --type Humanoid` - searches for Dragon OR Humanoid creatures
-- `--size Large --size Huge` - searches for Large OR Huge creatures
-
-3. Capture the complete markdown statblock output from the script.
-4. Return the markdown output directly to the user as-is, without reformatting.
-
-## Example Output
-
-```
-Found 1 creature(s) matching 18000.0 XP (±20%):
-
-# Adult Red Dragon
-
-*Huge Dragon, Chaotic Evil*
-
-**Armor Class** 19
-
-**Hit Points** 256
-
-**Speed** 40 ft., climb 40 ft., fly 80 ft.
-
-| STR | DEX | CON | INT | WIS | CHA |
-|:---:|:---:|:---:|:---:|:---:|:---:|
-| 27 | 10 | 25 | 16 | 13 | 21 |
-
-**Saving Throws** DEX +6, CON +13, WIS +7, CHA +11
-
-**Skills** Perception +13, Stealth +6
-
-***Eldest of red dragons, a tyrant of flame and devastation. Legendary in scale and power.***
-
-**Challenge** 17 (18000 XP)
-```
+## Guidelines for the Assistant
+1. **Curate the Menu:** When searching for candidates, present the summary table to the user and explain *why* these monsters fit the requested theme.
+2. **Mix Roles:** For complex encounters, search for a "Leader" (high XP target) and "Minions" (low XP target) separately to build a dynamic fight.
+3. **Wait for Selection:** Do not fetch full statblocks until the encounter composition is finalized and validated.

@@ -61,73 +61,44 @@ MONSTER_COUNT_SCALING_FACTORS = {
 def calculate_xp_threshold(
     party_level: int,
     party_size: int,
-    difficulty: str = "medium",
 ) -> dict:
     """
-    Calculate the XP threshold for an encounter.
+    Calculate the XP thresholds for all difficulty levels.
 
     Args:
         party_level: The level of the characters in the party (1-20)
         party_size: The number of characters in the party
-        difficulty: The desired difficulty (easy, medium, hard, or deadly)
 
     Returns:
-        A dictionary containing:
-        - xp_threshold: The total XP threshold for the encounter
-        - xp_per_character: The XP threshold per character
-        - difficulty: The difficulty level used
-        - party_level: The party level used
-        - party_size: The party size used
+        A dictionary containing XP thresholds for each difficulty.
     """
 
-    difficulty = difficulty.lower().strip()
-
-    # Get XP per character
-    xp_per_character = XP_THRESHOLDS_BY_LEVEL[party_level][difficulty]
-
-    # Get monster count
-    monster_count = min(int(random.expovariate(0.3)) + 1, 20)
-
-    # Get monster count difficulty modifier
-    monster_difficulty_modifier = MONSTER_COUNT_SCALING_FACTORS[monster_count]
-
-    # Calculate total XP threshold
-    total_encounter_xp = (xp_per_character * party_size)
-
-    # Adjusted monster xp based on monster count difficulty modifier
-    total_monster_xp = total_encounter_xp / monster_difficulty_modifier
-
-    # Average XP per monster
-    average_xp_per_monster = total_monster_xp / monster_count
-
-    return {
+    thresholds = XP_THRESHOLDS_BY_LEVEL[party_level]
+    
+    results = {
         "party_level": party_level,
         "party_size": party_size,
-        "difficulty": difficulty,
-        "xp_per_character": xp_per_character,
-        "monster_count": monster_count,
-        "monster_difficulty_modifier": monster_difficulty_modifier,
-        "total_monster_xp": total_monster_xp,
-        "total_encounter_xp": total_encounter_xp,
-        "average_xp_per_monster": average_xp_per_monster,
+        "easy": thresholds["easy"] * party_size,
+        "medium": thresholds["medium"] * party_size,
+        "hard": thresholds["hard"] * party_size,
+        "deadly": thresholds["deadly"] * party_size,
     }
+
+    return results
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Calculate XP thresholds for D&D 5e encounters")
     parser.add_argument("--party-level", type=int, required=True, help="Party level (1-20)")
     parser.add_argument("--party-size", type=int, required=True, help="Number of characters in the party")
-    parser.add_argument("--difficulty", type=str, default="medium", help="Encounter difficulty (easy, medium, hard, deadly)")
 
     args = parser.parse_args()
 
-    result = calculate_xp_threshold(args.party_level, args.party_size, args.difficulty)
+    result = calculate_xp_threshold(args.party_level, args.party_size)
     print(f"Party Level: {result['party_level']}")
     print(f"Party Size: {result['party_size']}")
-    print(f"Difficulty: {result['difficulty'].capitalize()}")
-    print(f"XP per Character: {result['xp_per_character']}")
-    print(f"Monster Count: {result['monster_count']}")
-    print(f"Monster Difficulty Modifier: {result['monster_difficulty_modifier']}")
-    print(f"Total Monster XP: {result['total_monster_xp']}")
-    print(f"Average XP per Monster: {result['average_xp_per_monster']}")
-    print(f"Total Encounter XP: {result['total_encounter_xp']}")
+    print(f"--- XP Thresholds ---")
+    print(f"Easy:   {result['easy']}")
+    print(f"Medium: {result['medium']}")
+    print(f"Hard:   {result['hard']}")
+    print(f"Deadly: {result['deadly']}")
