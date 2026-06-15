@@ -5,6 +5,7 @@ This file contains exactly 322 official D&D 5e SRD creatures.
 """
 
 import json
+import re
 from pathlib import Path
 
 
@@ -66,8 +67,30 @@ def convert_srd_to_monsters():
         # Use official D&D 5e XP table
         xp = OFFICIAL_XP_BY_CR.get(cr, 0)
         
+        # Extract number of legendary actions from description
+        legendary_desc = srd_creature.get("legendary_desc", "")
+        count_match = re.search(r'can take (\d+) legendary actions', legendary_desc)
+        legendary_count = int(count_match.group(1)) if count_match else 0
+
+        # Ensure perception is included in skills if present as a standalone field
+        skills = srd_creature.get("skills", {})
+        if "perception" not in skills and srd_creature.get("perception") is not None:
+            skills["perception"] = srd_creature.get("perception")
+
+        # Extract passive perception from senses string
+        senses = srd_creature.get("senses", "")
+        passive_perception = 10  # Default
+        passive_match = re.search(r'passive Perception (\d+)', senses)
+        if passive_match:
+            passive_perception = int(passive_match.group(1))
+            # Remove passive perception from the senses string and clean up trailing commas/spaces
+            senses = re.sub(r',?\s*passive Perception \d+', '', senses).strip().strip(',')
+
+        skills["passive_perception"] = passive_perception
+
         creature = {
             "name": name,
+            "slug": srd_creature.get("slug", ""),
             "cr": cr,
             "xp": xp,
             "type": srd_creature.get("type", ""),
@@ -78,9 +101,11 @@ def convert_srd_to_monsters():
             "environments": srd_creature.get("environments", []),
             "alignment": srd_creature.get("alignment", ""),
             "armor_class": srd_creature.get("armor_class", 10),
+            "armor_desc": srd_creature.get("armor_desc", ""),
             "hit_points": srd_creature.get("hit_points", 1),
+            "hit_dice": srd_creature.get("hit_dice", ""),
             "speed": srd_creature.get("speed", {"walk": 30}),
-            "skills": srd_creature.get("skills", {}),
+            "skills": skills,
             "stats": {
                 "strength": srd_creature.get("strength", 10),
                 "dexterity": srd_creature.get("dexterity", 10),
@@ -96,6 +121,29 @@ def convert_srd_to_monsters():
                 "intelligence": srd_creature.get("intelligence_save"),
                 "wisdom": srd_creature.get("wisdom_save"),
                 "charisma": srd_creature.get("charisma_save"),
+            },
+            "defenses": {
+                "damage": {
+                    "resistances": srd_creature.get("damage_resistances", ""),
+                    "immunities": srd_creature.get("damage_immunities", ""),
+                    "vulnerabilities": srd_creature.get("damage_vulnerabilities", ""),
+                },
+                "condition_immunities": srd_creature.get("condition_immunities", ""),
+            },
+            "traits": {
+                "special_abilities": srd_creature.get("special_abilities", []),
+                "senses": senses,
+                "languages": srd_creature.get("languages", ""),
+            },
+            "spells": srd_creature.get("spell_list", []),
+            "actions": {
+                "standard": srd_creature.get("actions", []),
+                "bonus": srd_creature.get("bonus_actions", []),
+                "reaction": srd_creature.get("reactions", []),
+                "legendary": {
+                    "count": legendary_count,
+                    "actions": srd_creature.get("legendary_actions", [])
+                }
             }
         }
         creatures.append(creature)
