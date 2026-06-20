@@ -11,7 +11,7 @@ The repository currently features a modular workflow for encounter and dungeon b
 - **[validate-encounter](.agents/skills/validate-encounter/SKILL.md)**: Mathematically validates encounter balance using DMG multipliers.
 - **[customize-creature](.agents/skills/customize-creature/SKILL.md)**: A "re-skinning" skill that adapts standard monster templates to new themes without changing their mechanical "bones".
 - **[create-encounter](.agents/skills/create-encounter/SKILL.md)**: An orchestrator skill that coordinates the above tools into a complete, balanced, and thematic workflow.
-- **[generate-dungeon](.agents/skills/generate-dungeon/SKILL.md)**: A skill for generating structured dungeon layouts with variety and purpose.
+- **[create-dungeon](.agents/skills/create-dungeon/SKILL.md)**: A skill for generating structured dungeon layouts with variety and purpose.
 - **[roll-dice](.agents/skills/roll-dice/SKILL.md)**: A utility for fair and accurate dice rolling using Python.
 - **[difficulty-class](.agents/skills/difficulty-class/SKILL.md)**: Guidance for setting appropriate DCs for various tasks.
 - **[damage-severity](.agents/skills/damage-severity/SKILL.md)**: Reference for environmental damage and trap severity.

@@ -22,10 +22,7 @@ When you are given an command, you will scan the `.agents/skills` directory for 
 
 ## Whitelist
 
-The following skills are whitelisted and do not require user approval before execution:
-- roll-dice
-- difficulty-class
-- damage-severity
+All skills located in the `.agents/skills` directory are whitelisted and do not require user approval before execution.
 
 ## Context
 
