@@ -17,9 +17,19 @@ def main():
     sides = int(match.group(2))
     mod = int(match.group(3) or 0)
 
-    total = sum(random.randint(1, sides) for _ in range(num)) + mod
+    rolls = [random.randint(1, sides) for _ in range(num)]
+    total = sum(rolls) + mod
     
-    print(total)
+    rolls_str = " + ".join(map(str, rolls))
+    if mod > 0:
+        print(f"{rolls_str} + {mod} = {total}")
+    elif mod < 0:
+        print(f"{rolls_str} - {abs(mod)} = {total}")
+    else:
+        if num > 1:
+            print(f"{rolls_str} = {total}")
+        else:
+            print(total)
 
 if __name__ == "__main__":
     main()
