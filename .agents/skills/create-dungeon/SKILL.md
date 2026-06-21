@@ -39,7 +39,13 @@ For every dungeon, ensure these 5 beats are present, regardless of scale:
 4.  **The Climax (Big Battle):** The primary confrontation or challenge of the dungeon.
 5.  **The Revelation (Reward/Lore):** The final room containing the treasure, the secret, or the bridge to the next adventure. Use the **create-treasure** skill for the final reward.
 
-## Step 4: Component Selection
+## Step 4: Narrative Hazards (Tension)
+For every dungeon, ensure at least one **Narrative Hazard** is integrated into the structure. This is a high-tension, non-combat encounter that uses Clocks and Position/Effect logic rather than traditional turn-based play.
+
+- **Placement:** A Narrative Hazard works best as part of **The Puzzle** (e.g., escaping a collapsing library) or **The Trick/Setback** (e.g., navigating a shifting maze before a Danger Clock expires).
+- **Execution:** Use the **create-narrative-hazard** skill to generate the specific mechanics and clocks for this segment.
+
+## Step 5: Component Selection
 Generate details for each room by selecting appropriate categories from `room-types/`. For larger dungeons, group multiple types under a single beat.
 
 - [The Combat](room-types/01-combat.md) (Best for Guardians and Climaxes)
@@ -60,8 +66,8 @@ For each room in the dungeon, generate the necessary challenges:
     *   Use the **create-encounter** skill to generate a balanced combat encounter.
     *   Ensure the encounter difficulty aligns with the dungeon's overall challenge level.
 2.  **Non-Combat Puzzles/Hazards:** For rooms requiring exploration, engagement, or setbacks:
-    *   Use the **create-puzzle** skill to generate thematic, in-world challenges.
-    *   Ensure the puzzle's complexity and danger align with the room's narrative purpose.
+    *   Use the **create-puzzle** skill for thematic, in-world challenges.
+    *   Use the **create-narrative-hazard** skill for high-tension sequences involving Clocks and Position/Effect logic (at least one per dungeon).
 3.  **Traps:** For rooms requiring hazards or security:
     *   Use the **create-trap** skill to design functional and logical traps.
     *   Ensure the trap's trigger and effect align with the room's original purpose.
