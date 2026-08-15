@@ -5,57 +5,97 @@ description: Generates high-tension, non-combat encounters using Clocks and Posi
 
 # Create Narrative Hazard
 
-This skill replaces traditional D&D turn-based mechanics with a "fiction-first" flow modeled after *Blades in the Dark*. Actions always move the narrative forward, even on a failure.
+This skill replaces traditional D&D turn-based mechanics with a "fiction-first" flow modeled after *Blades in the Dark*, but modified to fit D&D's mechanics and pacing. Actions always move the narrative forward, even on a failure.
 
-## Step 1: The Clocks
+## The Clocks
 Use clocks to track progress or encroaching danger.
 - **Progress Clock (Success):** Tracks the player's goal (e.g., "Escape the Sinking Ship").
 - **Danger Clock (Threat):** Tracks the environment's threat (e.g., "The Deck Submerges").
 
 **Standard Sizes:** 4 segments (Quick/High Risk), 6 segments (Standard), 8 segments (Complex).
 
-## Step 2: The Outcome Ladder
-Instead of binary pass/fail, use the relative difference between the roll and the **DC** to determine the narrative result.
+## The Outcome Ladder
+Use the relative difference between the roll and the **DC** to determine the outcome. **Every action ticks exactly one clock segment.**
 
-- **Succeed by 5+ (Yes, and...):** You achieve your goal. The **Progress Clock ticks twice**. The DM also chooses an edge:
-    - **Insight**: Gain information or a clue.
-    - **Setup**: Grant Advantage to a teammate's next roll.
-    - **Observation**: See a hidden item or alternate path.
-    - **Momentum**: Position improves (Desperate -> Risky -> Controlled).
-- **Succeed by 0–4 (Yes, but...):** You achieve your goal. The **Progress Clock ticks once**. The DM also chooses a complication:
-    - **Strain**: Take damage based on position.
-    - **Condition**: Gain a condition (blinded, poisoned, etc.).
-    - **Harassed**: Grant Disadvantage to a teammate's next roll.
-- **Fail by 1–4 (No, but...):** Fail your goal (0 Progress segments). The **Danger Clock ticks once**. The DM also chooses an edge:
-    - **Insight**: Gain information or a clue.
-    - **Setup**: Grant Advantage to a teammate's next roll.
-    - **Observation**: See a hidden item or alternate path.
-- **Fail by 5+ (No, and...):** Fail your goal (0 Progress segments). The **Danger Clock ticks twice**. The DM also chooses a complication:
-    - **Strain**: Take damage based on position.
-    - **Condition**: Gain a condition (blinded, poisoned, etc.).
-    - **Harassed**: Grant Disadvantage to a teammate's next roll.
-    - **Slip**: Position degrades (Controlled -> Risky -> Desperate).
+- **Succeed by 5+ (Critical Success):** Progress Clock +1, DM chooses 1 Edge.
+- **Succeed by 0–4 (Success):** Progress Clock +1, DM chooses 1 Complication.
+- **Fail by 1–4 (Partial Failure):** Danger Clock +1, DM chooses 1 Edge.
+- **Fail by 5+ (Critical Failure):** Danger Clock +1, DM chooses 1 Complication.
 
-## Step 3: Position (The Stakes)
-Before the roll, the DM establishes the **Position** to set the narrative and mechanical context for complications and edges.
+## Edges
+The DM chooses one edge when the party succeeds or partially fails.
 
-- **Controlled (Respite):** You have the upper hand or a moment of safety.
-    - **Damage**: **Minor** (1d4 or 1d6) or none. The threat is environmental inconvenience, not injury.
-    - **Complications**: Focus on narrative setbacks. **Harassed** might mean losing your next move or dropping a non-essential item rather than mechanical Disadvantage.
-    - **Edges**: Highly impactful. **Insight** and **Observation** provide deep knowledge. **Setup** is powerful—granting Advantage to *multiple* teammates or an Advantage that doesn't expire until used.
-- **Risky (Standard):** The classic, unstable adventuring environment where things can go either way.
-    - **Damage**: **Nuisance** (from `damage-severity`). The environment is dangerous but usually won't drop a healthy character.
-    - **Complications**: Uses standard results. **Harassed** grants Disadvantage to the next teammate's roll.
-    - **Edges**: Uses standard results. **Setup** grants Advantage to the next teammate's roll.
-- **Desperate (Crisis):** Everything is going wrong, and you are fighting for your life.
-    - **Damage**: **2x Nuisance** (from `damage-severity`). Every hit matters and can put a character near death.
-    - **Complications**: Catastrophic. In addition to standard choices, the DM can choose **Loss** (permanent loss of an NPC, asset, or gear). **Harassed** is severe—granting Disadvantage to *multiple* teammates as your failure cascades.
-    - **Edges**: An edge here is a narrow escape. **Setup** is powerful—granting Advantage to *every* teammate as you clear a path or draw all the heat.
+1. **Advantage** — Your next roll has advantage.
+2. **Position Improves** — Party moves toward safer position (Desperate → Risky, Risky → Controlled).
+3. **Clear Path** — Next teammate can act without triggering complications.
+4. **Condition Removal** — Remove a condition from a character (with narrative justification).
+5. **Temporary Respite** — Gain temporary hit points. Scales by position:
+   - **Controlled**: 1d4 temp HP
+   - **Risky**: 1d6 temp HP
+   - **Desperate**: 1d8 temp HP
+6. **Gain Item** — Discover or obtain a useful item, tool, or resource.
 
-## Step 4: Logic & Difficulty
-- **Clock Driven:** Successes always move the Progress Clock; failures (especially "No, but" and "No, and") always move the Danger Clock.
-- **Fiction First:** Players describe their action; the DM assigns the DC.
-- **Difficulty:** Use the `difficulty-class` skill (Typical DC 15).
-- **Damage:** Use the `damage-severity` skill for consequences based on party level.
-- **Fail Forward:** A failure must always change the situation. Either the danger increases, the position worsens, or a dark truth is revealed.
+## Complications
 
+1. **Disadvantage** — Inflict disadvantage on your next roll.
+2. **Position Degrades** — Party moves toward more danger (Controlled → Risky, Risky → Desperate).
+3. **Damage** — Take damage. Scales by position:
+   - **Controlled**: 1d4 or 1d6 damage
+   - **Risky**: 1d10 damage
+   - **Desperate**: 2d10 damage
+4. **Condition** — Gain a condition (exhaustion, blinded, restrained, etc.).
+5. **Loss** — Lose something (item, progress, an NPC's support).
+6. **Cascading Failure** — Next teammate automatically gains a complication, regardless of their roll outcome.
+
+## Position (The Stakes)
+Before the roll, establish the party's **Position** to determine the DC, and scaling for **Damage** and **Temporary Respite**.
+
+- **Controlled:** Upper hand, environmental inconvenience only. **DC 13**.
+- **Risky:** Standard danger, shouldn't kill a healthy character. **DC 15**.
+- **Desperate:** Everything wrong, every hit matters. **DC 17**.
+
+## Designing a Narrative Hazard
+
+To build a narrative hazard encounter, complete these steps:
+
+1. **Design the Clocks**
+   - Choose clock size: 4 segments (quick/high risk), 6 segments (standard), 8 segments (complex).
+   - Define what the Progress Clock represents (the party's goal).
+   - Define what the Danger Clock represents (the threat if they fail).
+
+2. **Define the Starting Position**
+   - Determine whether the party begins in **Controlled**, **Risky**, or **Desperate** position.
+   - This scales damage, temporary HP, and the narrative stakes of the hazard.
+
+3. **Set Narrative Context**
+   - Describe the sensory landscape: what the party sees, hears, feels, smells.
+   - Establish what's happening, why it's urgent, and what's at stake.
+
+4. **Define Narrative Reasons for Edges and Complications**
+   - For each edge and complication, note how it manifests in this specific hazard.
+   - These are suggestions for you to use during play; improvise others as needed.
+
+5. **Describe How the Hazard Ends**
+   - What happens when Progress Clock fills (victory condition)?
+   - What happens when Danger Clock fills (defeat condition)?
+   - What are the specific consequences in each case?
+
+## Hazard Document Format
+
+When creating a narrative hazard, include these sections in the final document:
+
+1. **Title & Overview** (1-2 sentences)
+2. **Narrative Context** (Descriptive text of what's happening, why it's urgent, and what the stakes are)
+3. **Clocks** (Progress and Danger, with segment sizes and what they represent)
+4. **Starting Position** (which position the party begins in)
+5. **Position Mechanics Reference** (a table or list showing DC, damage, and temp HP for all three positions)
+6. **Narrative Reasons for Edges and Complications** (how each mechanical outcome manifests in this specific hazard)
+7. **How the Hazard Ends** (what happens when Progress Clock fills; what happens when Danger Clock fills; specific victory/defeat conditions)
+
+## Running the Hazard
+- **Pacing:** A 6-segment clock requires 6 successes (or 6 failures) to fill. Adjust clock size: 4 (quick), 6 (standard), 8 (complex).
+- **Narrative:** Players describe actions; DM assigns DC. Failures always change the situation—complications emerge, position worsens, or new truths are revealed.
+- **Targeted Outcomes:** Players can describe actions aimed at a specific edge or complication instead of advancing the goal. Example: "I'm trying to stabilize the platform to improve our position." 
+  - **Success**: You achieve the targeted outcome (e.g., Position Improves). The **Progress Clock does not tick**. This is the trade-off: you buy a better position for future rolls instead of advancing your goal.
+  - **Failure**: The **Danger Clock ticks +1**. A complication occurs, possibly related to your failed attempt (e.g., your stabilization attempt causes Position Degrades).
+  - This creates meaningful choice: push toward victory, or trade progress for better footing.
