@@ -32,7 +32,3 @@ Documents record the current state of the world, story, or mechanic — never th
 - Do not justify decisions or explain why something was chosen over an alternative unless that reasoning is itself part of the fiction (e.g. a character's in-world motivation). Record the outcome and move on.
 - Do not reference a connection, mechanic, or detail that used to exist, even to say it no longer applies or "isn't needed." If it isn't true now, it isn't mentioned at all.
 - Treat every document as if it were being written fresh, knowing only the final answer — not as a log of the conversation that produced it.
-
-## Confirming These Instructions Are Loaded
-
-As soon as you finish loading these instructions — at the start of a session, and again if they are reloaded after compaction — immediately output `INSTRUCTIONS LOADED`, before doing anything else.
