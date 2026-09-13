@@ -1,6 +1,6 @@
 # D&D Skills
 
-This repository contains a collection of [Agent Skills](https://agentskills.io) for Dungeons & Dragons (5e). These skills combine Python-based mathematical rigor with LLM creativity to help Dungeon Masters generate balanced and thematic encounters, dungeons, and more.
+This repository contains a collection of [Agent Skills](https://agentskills.io) for Dungeons & Dragons (5e). These skills combine Python-based mathematical rigor with LLM creativity to help Dungeon Masters generate balanced and thematic encounters, dungeons, and more — and to help players build and maintain their characters.
 
 ## Current Skills
 
@@ -23,6 +23,9 @@ The repository features a comprehensive suite of tools for campaign management a
 - **[lookup-creatures](skills/lookup-creatures/SKILL.md)**: Searches monster databases for creatures by environment, type, and XP.
 - **[validate-encounter](skills/validate-encounter/SKILL.md)**: Mathematically validates encounter balance using DMG multipliers.
 - **[customize-creature](skills/customize-creature/SKILL.md)**: Adapts standard monster templates to new themes without changing their mechanical bones.
+
+### Player Characters
+- **[create-character-sheet](skills/create-character-sheet/SKILL.md)**: Builds a printable character sheet and spell cards from a single data file.
 
 ### Core Utilities
 - **[roll-dice](skills/roll-dice/SKILL.md)**: A utility for fair and accurate dice rolling using Python.

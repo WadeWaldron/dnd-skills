@@ -1,6 +1,6 @@
 {
   "name": "dnd-skills",
-  "description": "Agent Skills to help Dungeon Masters build and run D&D 5e campaigns.",
+  "description": "Agent Skills for building, running, and playing D&D 5e campaigns.",
   "version": "0.1.0",
   "author": {
     "name": "Wade Waldron"
