@@ -1,0 +1,14 @@
+{
+  "name": "dnd-skills",
+  "description": "Agent Skills to help Dungeon Masters build and run D&D 5e campaigns.",
+  "owner": {
+    "name": "Wade Waldron"
+  },
+  "plugins": [
+    {
+      "name": "dnd-skills",
+      "source": "./",
+      "description": "Agent Skills to help Dungeon Masters build and run D&D 5e campaigns."
+    }
+  ]
+}
