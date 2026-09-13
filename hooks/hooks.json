@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/table_format.py\"",
+            "statusMessage": "Aligning markdown tables"
+          }
+        ]
+      }
+    ]
+  }
+}

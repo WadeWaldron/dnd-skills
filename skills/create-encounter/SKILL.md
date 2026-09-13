@@ -67,6 +67,13 @@ To inject uncertainty and urgency, you may include a **Visible Tension Die** mec
     - *The Floodgates Shift:* (Foreshadowed: "The sound of rushing water grows louder"). A new path opens or a current pushes combatants towards a specific zone.
     - *Neutral Reinforcements:* (Foreshadowed: "A group of scavengers waits nearby"). They arrive and may scavenge from both sides or offer a social escape.
 
+### 8. Write It Up
+
+Format the finished encounter using the [Encounter Template](encounter-template.md).
+
+- The **Encounter Balance** block is transcribed directly from the `validate-encounter` output — never hand-calculated, never adjusted to match a desired label.
+- The template file includes fill-in rules and a worked example.
+
 ## Guidelines for the Assistant
 - **No Manual Math:** Do not try to calculate Adjusted XP or multipliers yourself. Trust the **validate-encounter** tool.
 - **Thematic Integrity:** Use your internal knowledge to pick candidates that make sense together (e.g., don't mix desert and arctic creatures unless there's a story reason).
