@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Character Sheet</title>
+<style>
+  :root{
+    --ink:#17130f; --muted:#6d635a; --line:#17130f; --hair:#b6aa9c;
+    --paper:#fffefb; --fill:#f3ede3; --accent:#7c1f1f;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:#ded8ce; color:var(--ink);
+    font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  .toolbar{
+    position:sticky; top:0; z-index:20; background:#2b2521; color:#f4efe8;
+    padding:.7rem 1rem; display:flex; gap:1rem; align-items:center; flex-wrap:wrap;
+    font-family:system-ui,-apple-system,sans-serif; font-size:.85rem;
+  }
+  .toolbar strong{font-size:.95rem;}
+  .toolbar button{font:inherit;cursor:pointer;background:#c9a227;color:#241f1b;border:0;padding:.4rem .9rem;border-radius:4px;font-weight:600;}
+  .toolbar span{color:#b9afa4;}
+  .err{background:#7c1f1f;color:#fff;padding:1rem 1.2rem;font-family:system-ui,sans-serif;font-size:.9rem;line-height:1.5;}
+  .err code{background:rgba(255,255,255,.15);padding:1px 4px;border-radius:3px;}
+
+  /* FIXED page box. Screen and print use the same 7.82 x 10.32in content area,
+     so what you see is what prints — print just scales it uniformly. Content
+     that doesn't fit is clipped, and the toolbar warns you which page. */
+  .page{
+    width:8.5in; height:11in; margin:.3in auto; padding:.34in;
+    background:var(--paper); box-shadow:0 2px 10px rgba(0,0,0,.2);
+    display:flex; flex-direction:column; overflow:hidden;
+  }
+
+  .box{border:1.4px solid var(--line); border-radius:5px; background:var(--paper);}
+  .box,.lcard,.rp,.hp,.desc,.trio .box,.hdrow .box{display:flex; flex-direction:column;}
+  .lbl{
+    font-family:system-ui,sans-serif; font-size:5.6pt; font-weight:700;
+    text-transform:uppercase; letter-spacing:.6px; text-align:center; color:var(--ink);
+    padding:2px 0 0; margin-top:auto;
+  }
+  .lbl-in{font-family:system-ui,sans-serif;font-size:5.4pt;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);text-align:center;}
+  .muted{color:var(--muted);} .note{color:var(--muted);font-style:italic;}
+
+  /* Name, facts, photo and description share one grid, matching the body
+     columns below (2.3in / 2.58in / 1fr) so everything lines up: photo sits
+     top-right, spanning both rows, fixed in place rather than squeezed into
+     a box sized by whatever's left over in the features column. */
+  .head{display:grid; grid-template-columns:2.3in 2.58in 1fr; grid-template-rows:auto auto; gap:9px; margin-bottom:9px;}
+  .head .namebox{grid-column:1; grid-row:1;}
+  .head .headgrid{grid-column:2; grid-row:1;}
+  .head .portrait{grid-column:3; grid-row:1 / 3;}
+  .head .desc{grid-column:1 / 3; grid-row:2;}
+  .namebox{border:1.4px solid var(--line);border-radius:5px;padding:7px 10px 4px;display:flex;flex-direction:column;justify-content:flex-end;}
+  .namebox .nm{font-size:19pt;line-height:1;font-weight:700;letter-spacing:.2px;}
+  .namebox .ep{font-size:7.5pt;font-style:italic;color:var(--muted);margin-top:2px;}
+  .headgrid{border:1.4px solid var(--line);border-radius:5px;display:grid;grid-template-columns:1fr 1fr;}
+  .headgrid > div{padding:4px 8px 3px;border-right:1px solid var(--hair);border-bottom:1px solid var(--hair);}
+  .headgrid > div:nth-child(2n){border-right:0;}
+  .headgrid > div:nth-child(n+5){border-bottom:0;}
+  .headgrid .v{font-size:8.6pt;line-height:1.15;min-height:11px;}
+  .headgrid .v .sub{font-size:7pt;font-style:italic;color:var(--muted);line-height:1.2;}
+  .headgrid .k{font-family:system-ui,sans-serif;font-size:5.4pt;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);}
+
+  .cols{display:grid; grid-template-columns:2.3in 2.58in 1fr; gap:9px; align-items:stretch; flex:1; min-height:0;}
+  .col{display:flex; flex-direction:column; gap:8px; min-height:0; overflow:hidden;}
+  /* min-height:0 overrides the flex default (auto-size to content), so a
+     grow box is held to the space its column actually gives it — without
+     this, its own scrollHeight/clientHeight always agree (it just grows to
+     fit whatever's inside), so nothing here can ever detect its own
+     overflow; the real clipping then happens one level up, undetected. */
+  .col > .grow{flex:1; display:flex; flex-direction:column; min-height:0;}
+
+  .desc{border:1.4px solid var(--line);border-radius:5px;padding:6px 10px 5px;}
+  .dt{font-size:7.3pt;line-height:1.4;}
+  .dt p{margin:0 0 3px;} .dt p:last-child{margin-bottom:1px;}
+
+  .uses{display:inline-flex;gap:2.5px;margin-right:5px;vertical-align:-1px;}
+  .uses i{width:7px;height:7px;border:1.1px solid var(--line);border-radius:1.5px;display:inline-block;}
+  .blank{display:inline-block;min-width:24px;border-bottom:1px solid #cabda9;}
+
+  .leftwrap{border:1.4px solid var(--line);border-radius:8px;background:var(--fill);padding:6px 7px 5px;display:flex;flex-direction:column;}
+  .bar{display:flex;align-items:center;gap:8px;border:1.3px solid var(--line);border-radius:13px;background:var(--paper);padding:2px 10px 2px 3px;margin-bottom:3px;}
+  .bar .bv{width:36px;min-height:17px;border:1.3px solid var(--line);border-radius:5px;background:var(--paper);text-align:center;font-size:10pt;font-weight:700;line-height:17px;}
+  .bar .bk{font-family:system-ui,sans-serif;font-size:5.4pt;font-weight:700;text-transform:uppercase;letter-spacing:.6px;}
+
+  .ablock{display:grid;grid-template-columns:.74in 1fr;gap:8px;align-items:start;min-height:.87in;}
+  .ablock:first-of-type{margin-top:3px;}
+  .askills{padding:1px 2px 0 0;}
+  .askills .row{font-size:6.9pt;line-height:1.26;}
+  .askills .row .mod{width:18px;}
+  .askills .sv{border-bottom:1px solid #d8ccbb;padding-bottom:1.5px;margin-bottom:1.5px;}
+  .askills .sv .nm{font-family:system-ui,sans-serif;font-size:5.2pt;font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
+
+  .abil{border:1.4px solid var(--line);border-radius:7px;background:var(--paper);padding:4px 2px 3px;text-align:center;}
+  .abil .am{font-size:16pt;font-weight:700;line-height:1.04;}
+  .abil .as{width:33px;height:19px;margin:2px auto 3px;border:1.3px solid var(--line);border-radius:10px;background:var(--paper);font-size:9pt;line-height:17px;font-weight:600;}
+  .abil .an{font-family:system-ui,sans-serif;font-size:5pt;font-weight:700;text-transform:uppercase;letter-spacing:.45px;line-height:1.1;}
+
+  .lcard{border:1.4px solid var(--line);border-radius:5px;padding:5px 7px 3px;}
+  .row{display:flex;align-items:center;gap:5px;font-size:7.6pt;line-height:1.62;}
+  .dot{width:8px;height:8px;border:1.2px solid var(--line);border-radius:50%;flex:0 0 8px;}
+  .dot.on{background:var(--ink);}
+  .row .mod{width:20px;text-align:right;font-weight:700;font-variant-numeric:tabular-nums;}
+  .row .nm{flex:1;}
+  .row .sub{font-size:5.8pt;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;}
+  .row.dis .nm{color:var(--accent);}
+
+  .passive{border:1.3px solid var(--line);border-radius:13px;display:flex;align-items:center;gap:8px;padding:2px 10px 2px 3px;background:var(--paper);}
+  .passive .v{font-size:10pt;font-weight:700;width:36px;min-height:17px;line-height:17px;text-align:center;border:1.3px solid var(--line);border-radius:5px;background:var(--paper);}
+  .passive .k{font-family:system-ui,sans-serif;font-size:5.6pt;font-weight:700;text-transform:uppercase;letter-spacing:.5px;line-height:1.25;}
+
+  .trio{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;}
+  .trio .box{padding:4px 2px 3px;text-align:center;}
+  .trio .v{font-size:15pt;font-weight:700;line-height:1.1;}
+  .trio .v small{font-size:6.5pt;font-weight:400;color:var(--muted);display:block;line-height:1.2;}
+  .hp{border:1.4px solid var(--line);border-radius:5px;padding:4px 8px 6px;}
+  .hp .top{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--hair);padding-bottom:3px;margin-bottom:4px;}
+  .hp .big{font-size:17pt;font-weight:700;}
+  .hp .cur{height:19px;}
+  .hdrow{display:grid;grid-template-columns:1fr 1.25fr;gap:7px;}
+  .deaths{display:flex;flex-direction:column;gap:3px;padding:4px 7px;}
+  .deaths .dr{display:flex;align-items:center;gap:4px;font-family:system-ui,sans-serif;font-size:5.4pt;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);}
+  .deaths .dr .cs{display:flex;gap:3px;margin-left:auto;}
+  .deaths .cir{width:9px;height:9px;border:1.2px solid var(--line);border-radius:50%;}
+
+  table.atk{width:100%;border-collapse:collapse;font-size:7.4pt;}
+  table.atk th{font-family:system-ui,sans-serif;font-size:5.3pt;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);border-bottom:1px solid var(--hair);padding:1px 3px;text-align:left;}
+  table.atk td{padding:2.5px 3px;border-bottom:1px solid #e6ded2;}
+  table.atk td.c{text-align:center;font-weight:700;font-variant-numeric:tabular-nums;}
+
+  .free{font-size:7pt;line-height:1.4;padding:4px 7px 2px;}
+  .free p{margin:0 0 3px;}
+  .coins{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-bottom:5px;}
+  .coin{border:1.2px solid var(--hair);border-radius:4px;text-align:center;padding:2px 0 1px;}
+  .coin .k{font-family:system-ui,sans-serif;font-size:5pt;font-weight:700;color:var(--muted);}
+  .coin .v{font-size:8pt;font-weight:700;min-height:11px;}
+  /* ruled lines to write in — fills whatever's left in the Equipment box on
+     page 1, and in the trailing notes filler on the flowing pages */
+  .rules{flex:1;min-height:.7in;background-image:repeating-linear-gradient(to bottom,transparent 0,transparent 15px,#ddd3c4 15px,#ddd3c4 15.7px);}
+  /* used where the leftover space is small and unpredictable (page 1's
+     grow boxes) — no floor, so even room for a line or two still gets used
+     instead of being rejected outright for falling short of .7in */
+  .rules.fill{min-height:0;}
+
+  /* height comes from the grid area it's placed in (see .head above), not a
+     fixed value, and the image is "contain" so it's never cropped to fit. */
+  .portrait{position:relative;overflow:hidden;border:1.4px solid var(--line);border-radius:5px;background:var(--fill);display:flex;align-items:center;justify-content:center;}
+  .portrait .pimg{position:absolute;inset:0;z-index:1;background-size:contain;background-position:center;background-repeat:no-repeat;}
+  .ph{position:relative;z-index:0;text-align:center;color:#a09383;line-height:1.3;}
+  .ph .phi{font-size:26pt;line-height:1;margin-bottom:5px;color:#c2b5a4;}
+  .ph .pht{font-family:system-ui,sans-serif;font-size:6pt;font-weight:700;text-transform:uppercase;letter-spacing:1.4px;}
+  .ph .phs{font-size:6pt;font-style:italic;margin-top:5px;color:#b5a897;}
+
+  .rp{border:1.4px solid var(--line);border-radius:5px;padding:5px 8px 4px;}
+  .feat{font-size:7pt;line-height:1.38;}
+  .feat h4{margin:5px 0 1px;font-family:system-ui,sans-serif;font-size:5.6pt;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--accent);border-bottom:1px solid #e2d8ca;padding-bottom:1px;}
+  .feat h4:first-child{margin-top:0;}
+  .feat p{margin:0 0 2.5px;}
+
+  .sp-head{display:grid;grid-template-columns:1.7fr 1fr 1fr 1fr;gap:8px;margin-bottom:10px;}
+  .sp-head .box{padding:4px 6px 3px;text-align:center;}
+  .sp-head .v{font-size:12pt;font-weight:700;line-height:1.2;}
+  .sp-head .v.sm{font-size:9pt;}
+  /* ---------- flowing pages (everything after page 1) ---------------------
+     Pages 2+ are built at render time, not fixed in the markup. Every spell,
+     companion, panel, and background section is a "section": one indivisible
+     block, measured and dropped into a 2-column flow, spilling onto as many
+     pages as it takes. The last column gets a ruled notes filler for
+     whatever space is left over. See the layoutFlow() function below. */
+  .flowhead{font-family:system-ui,sans-serif;font-size:6pt;font-weight:700;
+            text-transform:uppercase;letter-spacing:1px;color:var(--muted);
+            border-bottom:1px solid var(--hair);padding-bottom:3px;margin-bottom:8px;
+            display:flex;justify-content:space-between;flex:0 0 auto;}
+  .flowcols{display:grid;grid-template-columns:1fr 1fr;gap:10px;flex:1;min-height:0;}
+  .flownotes{border:1.4px solid var(--line);border-radius:5px;flex:1;min-height:.4in;
+             display:flex;flex-direction:column;padding:5px 7px 2px;}
+  .footnote{font-size:6.4pt;color:var(--muted);font-style:italic;line-height:1.35;
+            padding:0 2px;}
+  .slev{border:1.4px solid var(--line);border-radius:5px;padding:6px 8px 5px;}
+  .slev .hdr{display:flex;align-items:center;gap:7px;border-bottom:1.2px solid var(--line);padding-bottom:3px;margin-bottom:4px;}
+  .slev .lv{width:20px;height:20px;border:1.4px solid var(--line);border-radius:50%;text-align:center;line-height:18px;font-weight:700;font-size:9pt;}
+  .slev .ttl{font-family:system-ui,sans-serif;font-size:6pt;font-weight:700;text-transform:uppercase;letter-spacing:.7px;}
+  .slev .slots{margin-left:auto;font-family:system-ui,sans-serif;font-size:5.6pt;font-weight:700;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:4px;}
+  .slev .cir{width:11px;height:11px;border:1.3px solid var(--line);border-radius:50%;}
+  .spell{display:flex;gap:6px;padding:3.5px 0;border-bottom:1px solid #ece3d6;font-size:7.4pt;line-height:1.35;}
+  .spell:last-child{border-bottom:0;}
+  .spell .pip{width:9px;height:9px;border:1.2px solid var(--line);border-radius:50%;flex:0 0 9px;margin-top:2px;}
+  .spell .pip.filled{background:var(--ink);}
+  .spell .pip.ritual{border-radius:2px;background:var(--ink);}
+  .spell .nm{font-weight:700;}
+  .spell .de{color:var(--muted);font-size:6.6pt;}
+  .spell .bd{flex:1;}
+  .party{display:grid;grid-template-columns:1fr auto;gap:0 8px;font-size:7.2pt;line-height:1.5;}
+  .party .pn{font-weight:700;}
+  .party .pp{color:var(--muted);font-size:6.4pt;text-align:right;white-space:nowrap;}
+  .party .bl{border-bottom:1px solid #d8ccbb;min-height:11px;}
+  .panel{border:1.4px solid var(--line);border-radius:5px;padding:6px 9px 6px;font-size:7.2pt;line-height:1.42;}
+  .panel h3{margin:0 0 3px;font-family:system-ui,sans-serif;font-size:6pt;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--accent);}
+  .panel p{margin:0 0 3px;}
+  .panel .k{font-weight:700;}
+  .warn{background:var(--fill);}
+
+  /* ---------- background sections, as flowed blocks -------------------- */
+  .bgflow h3{margin:0 0 3px;font-family:system-ui,sans-serif;font-size:6pt;font-weight:700;
+             text-transform:uppercase;letter-spacing:.7px;color:var(--accent);
+             border-bottom:1px solid #e2d8ca;padding-bottom:1.5px;}
+  .bgflow p{margin:0 0 5px;font-size:7.5pt;line-height:1.46;}
+  .bgflow p:last-child{margin-bottom:0;}
+  /* optional drawing; height is set from character.js */
+  .bgfig{border:1.4px solid var(--line);border-radius:5px;padding:6px 6px 3px;
+         display:flex;flex-direction:column;}
+  .bgfig .im{flex:1;min-height:0;background-size:contain;background-position:center;
+             background-repeat:no-repeat;}
+  .bgfig .cap{font-family:system-ui,sans-serif;font-size:5.6pt;font-weight:700;
+              text-transform:uppercase;letter-spacing:.5px;color:var(--muted);
+              text-align:center;padding-top:4px;}
+  .bgaside{border:1.3px solid var(--line);border-radius:5px;background:var(--fill);
+           padding:6px 9px 5px;}
+  .bgaside h3{border-bottom:0;padding-bottom:0;}
+
+  @media print{
+    body{background:#fff;}
+    .toolbar{display:none;}
+    /* Same content box as on screen (7.82 x 10.32in), scaled to sit inside the
+       7.6 x 10.1in printable area of a Letter page at .45in margins.
+       PRINT AT 100% — do not let the dialog scale to fit. */
+    .page{margin:0;box-shadow:none;width:7.82in;height:10.32in;padding:0;zoom:.97;}
+    .page + .page{page-break-before:always;}
+    @page{size:letter portrait;margin:.45in;}
+    .lcard,.rp,.slev,.panel,.abil,.hp,.box,.bgflow,.bgaside,.bgfig,.flownotes{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="character.js"></script>
+<script>
+(function(){
+  const C = window.CHARACTER;
+  const root = document.getElementById("root");
+  if(!C){
+    root.innerHTML = '<div class="err"><b>No character data found.</b><br>'+
+      'This sheet expects a <code>character.js</code> file beside it that sets '+
+      '<code>window.CHARACTER = {…}</code>. Copy one from the template folder.</div>';
+    return;
+  }
+
+  /* ---------- derivation: everything below is computed, never typed ------- */
+  const ABIL = [["str","Strength"],["dex","Dexterity"],["con","Constitution"],
+                ["int","Intelligence"],["wis","Wisdom"],["cha","Charisma"]];
+  const SKILLS = {
+    str:[["athletics","Athletics"]],
+    dex:[["acrobatics","Acrobatics"],["sleightOfHand","Sleight of Hand"],["stealth","Stealth"]],
+    con:[],
+    int:[["arcana","Arcana"],["history","History"],["investigation","Investigation"],["nature","Nature"],["religion","Religion"]],
+    wis:[["animalHandling","Animal Handling"],["insight","Insight"],["medicine","Medicine"],["perception","Perception"],["survival","Survival"]],
+    cha:[["deception","Deception"],["intimidation","Intimidation"],["performance","Performance"],["persuasion","Persuasion"]],
+  };
+  const PB   = C.proficiencyBonus;
+  const mod  = a => Math.floor((C.abilities[a] - 10) / 2);
+  const sign = n => (n < 0 ? "−" : "+") + Math.abs(n);
+  const has  = (list, k) => (list || []).indexOf(k) !== -1;
+  const save = a => mod(a) + (has(C.saveProf, a) ? PB : 0);
+  const skill= (a,k) => mod(a) + (has(C.skillProf, k) ? PB : 0);
+
+  const spellAbil = (C.spellcasting && C.spellcasting.ability) || "int";
+  const spellDC   = 8 + PB + mod(spellAbil);
+  const spellAtk  = PB + mod(spellAbil);
+  const passive   = 10 + skill("wis","perception");
+
+  const e = (t, cls, html) => {
+    const n = document.createElement(t);
+    if(cls) n.className = cls;
+    if(html != null) n.innerHTML = html;
+    return n;
+  };
+  const pips = n => '<span class="uses">' + '<i></i>'.repeat(n) + '</span>';
+
+  /* ---------- page 1 ------------------------------------------------------ */
+  const p1 = e("div","page");
+
+  // Name, facts, photo and description share one grid: name and facts sit
+  // side by side on top, the photo spans down the right at a fixed spot
+  // (never squeezed by whatever else is on the page), and the description
+  // runs the width of the other two underneath it.
+  const head = e("div","head");
+  head.innerHTML =
+    '<div class="namebox"><div class="nm">'+C.name+'</div>'+
+    (C.epithet ? '<div class="ep">'+C.epithet+'</div>' : '')+'</div>'+
+    '<div class="headgrid">'+
+      '<div><div class="v">'+(C.classLevel||"&nbsp;")+
+        (C.subclass ? '<div class="sub">'+C.subclass+'</div>' : '')+
+        '</div><div class="k">Class &amp; Level</div></div>'+
+      [["Background",C.background],["Player Name",C.player],
+       ["Species",C.species],["Alignment",C.alignment],["Experience",C.xp]]
+      .map(p => '<div><div class="v">'+(p[1]||"&nbsp;")+'</div><div class="k">'+p[0]+'</div></div>').join('')+
+    '</div>'+
+    '<div class="portrait"><div class="ph"><div class="phi">✒</div><div class="pht">Portrait</div>'+
+      '<div class="phs">save as <b>'+(C.portrait||"portrait.jpg")+'</b><br>beside this file</div></div>'+
+      '<div class="pimg" style="background-image:url(\''+(C.portrait||"portrait.jpg")+'\')"></div></div>'+
+    (C.descriptionHtml ?
+      '<div class="desc"><div class="dt">'+C.descriptionHtml+'</div><div class="lbl">Description</div></div>'
+      : '');
+  p1.appendChild(head);
+
+  const cols = e("div","cols");
+
+  /* --- left: abilities with their saves and skills beside them --- */
+  const left = e("div","col");
+  let lw = '<div class="leftwrap">'+
+    '<div class="bar"><span class="bv">'+sign(PB)+'</span><span class="bk">Proficiency Bonus</span></div>'+
+    '<div class="bar"><span class="bv">&nbsp;</span><span class="bk">Inspiration</span></div>';
+  ABIL.forEach(function(a){
+    const key = a[0];
+    let rows = '<div class="row sv"><span class="dot'+(has(C.saveProf,key)?" on":"")+'"></span>'+
+               '<span class="mod">'+sign(save(key))+'</span><span class="nm">Saving Throw</span></div>';
+    SKILLS[key].forEach(function(s){
+      const note = (C.skillNote||{})[s[0]];
+      rows += '<div class="row'+(note?" dis":"")+'">'+
+        '<span class="dot'+(has(C.skillProf,s[0])?" on":"")+'"></span>'+
+        '<span class="mod">'+sign(skill(key,s[0]))+'</span>'+
+        '<span class="nm">'+s[1]+(note?' <span class="sub">'+note+'</span>':'')+'</span></div>';
+    });
+    lw += '<div class="ablock">'+
+      '<div class="abil"><div class="am">'+sign(mod(key))+'</div>'+
+      '<div class="as">'+C.abilities[key]+'</div><div class="an">'+a[1]+'</div></div>'+
+      '<div class="askills">'+rows+'</div></div>';
+  });
+  lw += '<div class="passive" style="margin-top:9px"><div class="v">'+passive+'</div>'+
+        '<div class="k">Passive Wisdom (Perception)'+
+        (C.passiveNote ? '<br><span style="color:var(--accent)">'+C.passiveNote+'</span>' : '')+
+        '</div></div></div>';
+  left.innerHTML = lw +
+    '<div class="lcard grow" style="margin-top:8px"><div class="free" style="padding:0 0 2px;">'+
+      '<p><b>Armor:</b> '+C.armor+'</p><p><b>Weapons:</b> '+C.weapons+'</p>'+
+      '<p><b>Tools:</b> '+C.toolsHtml+'</p><p style="margin:0"><b>Languages:</b> '+C.languages+'</p>'+
+    '</div><div class="lbl">Other Proficiencies &amp; Languages</div></div>';
+  cols.appendChild(left);
+
+  /* --- middle: combat, attacks, equipment, notes --- */
+  const mid = e("div","col");
+  let atkRows = '<tr><th style="width:47%">Name</th><th style="width:18%;text-align:center">Atk</th><th>Damage / Type</th></tr>';
+  (C.attacks||[]).forEach(a => atkRows += '<tr><td>'+a.name+'</td><td class="c">'+a.atk+'</td><td>'+a.dmg+'</td></tr>');
+  for(let i=0;i<(C.blankAttackRows||0);i++) atkRows += '<tr><td>&nbsp;</td><td class="c">&nbsp;</td><td>&nbsp;</td></tr>';
+
+  let cons = "";
+  if((C.consumables||[]).length){
+    cons = '<p style="margin-top:4px">' + C.consumables.map(function(c){
+      return c.name+' <span class="blank"></span>'+(c.note?' <span class="note">— '+c.note+'</span>':'');
+    }).join(' · ') + '</p>';
+  }
+
+  mid.innerHTML =
+    '<div class="trio">'+
+      '<div class="box"><div class="v">'+C.ac+(C.acNote?'<small>'+C.acNote+'</small>':'<small>&nbsp;</small>')+'</div><div class="lbl">Armor Class</div></div>'+
+      '<div class="box"><div class="v">'+sign(mod("dex"))+'<small>&nbsp;</small></div><div class="lbl">Initiative</div></div>'+
+      '<div class="box"><div class="v">'+C.speed+'<small>feet</small></div><div class="lbl">Speed</div></div>'+
+    '</div>'+
+    '<div class="hp"><div class="top"><div class="lbl-in" style="text-align:left">Hit Point Maximum</div>'+
+      '<div class="big">'+C.hp+'</div></div><div class="cur"></div><div class="lbl">Current Hit Points</div></div>'+
+    '<div class="box" style="padding:3px 8px 2px;"><div style="height:16px"></div><div class="lbl">Temporary Hit Points</div></div>'+
+    '<div class="hdrow">'+
+      '<div class="box" style="padding:3px 7px 2px;"><div class="lbl-in" style="text-align:left">Total '+(C.hitDiceTotal||1)+'</div>'+
+        '<div style="font-size:11pt;font-weight:700;">'+C.hitDice+'</div><div class="lbl">Hit Dice</div></div>'+
+      '<div class="box deaths">'+
+        '<div class="dr">Successes <span class="cs"><i class="cir"></i><i class="cir"></i><i class="cir"></i></span></div>'+
+        '<div class="dr">Failures <span class="cs"><i class="cir"></i><i class="cir"></i><i class="cir"></i></span></div>'+
+        '<div class="lbl" style="margin-top:1px">Death Saves</div></div>'+
+    '</div>'+
+    '<div class="box" style="padding:4px 7px 2px;"><table class="atk">'+atkRows+'</table>'+
+      '<div class="free">'+(C.attackNotesHtml||"")+'</div><div class="lbl">Attacks &amp; Spellcasting</div></div>'+
+    '<div class="box grow" style="padding:5px 7px 2px;"><div class="coins">'+
+      ["CP","SP","EP","GP","PP"].map(k=>'<div class="coin"><div class="v">&nbsp;</div><div class="k">'+k+'</div></div>').join('')+
+      '</div><div class="free" style="padding:0">'+(C.equipmentHtml||"")+cons+'</div>'+
+      '<div class="lbl">Equipment</div></div>';
+  cols.appendChild(mid);
+
+  /* --- right: portrait + features --- */
+  const right = e("div","col");
+  let feat = "";
+  (C.features||[]).forEach(function(g){
+    feat += '<h4>'+g.group+'</h4>';
+    g.items.forEach(function(it){
+      feat += '<p>'+(it.uses?pips(it.uses):'')+
+              (it.name?'<b>'+it.name+'.</b> ':'')+(it.text||'')+'</p>';
+    });
+  });
+  right.innerHTML =
+    '<div class="rp grow"><div class="feat">'+feat+'</div><div class="lbl">Features &amp; Traits</div></div>';
+  cols.appendChild(right);
+
+  p1.appendChild(cols);
+  root.appendChild(p1);
+
+  // Features & Traits is the one page-1 box that grows with the character
+  // rather than staying roughly constant (abilities, attacks, equipment
+  // don't). Rather than let it clip like the rest of page 1, it shrinks in
+  // small steps — via `zoom`, same trick print uses, so headings and body
+  // text scale together — until it fits or hits a readability floor. Past
+  // that floor it's left alone and the usual overflow warning below still
+  // catches it, same as any other page-1 box that's genuinely too long.
+  (function shrinkFeatures(){
+    const box = right.querySelector(".rp");
+    const feat = right.querySelector(".feat");
+    if(!box || !feat) return;
+    let z = 1;
+    const minZoom = .82;
+    while(box.scrollHeight > box.clientHeight + 1 && z > minZoom){
+      z = Math.round((z - .02) * 100) / 100;
+      feat.style.zoom = z;
+    }
+  })();
+
+  // A grow box's label always sits at the bottom (margin-top:auto), so any
+  // leftover room is between the content and the label — that's where ruled
+  // lines go. Added only if it actually fits: same guard as the flowing
+  // pages' trailing notes box, so a box that's already full is just left as
+  // is instead of forced into overflow by the ruled area's min-height.
+  function fillWithRules(box){
+    if(!box) return;
+    const lbl = box.querySelector(".lbl");
+    const rules = e("div","rules fill");
+    if(lbl) box.insertBefore(rules, lbl); else box.appendChild(rules);
+    if(box.scrollHeight > box.clientHeight + 1) rules.remove();
+  }
+  fillWithRules(mid.querySelector(".grow"));    // Equipment
+  fillWithRules(left.querySelector(".grow"));   // Other Proficiencies & Languages
+  fillWithRules(right.querySelector(".grow"));  // Features & Traits, after it's shrunk
+
+  /* ---------- pages 2+: everything after page 1, as flowed sections -------
+     Spells, companions, party, panels, and background are all just
+     "sections" — one indivisible block each. They're packed two columns at
+     a time, spilling onto as many pages as needed; whatever's left over on
+     the last page becomes a ruled notes box. Nothing here is pinned to a
+     page number, so trimming or growing character.js just changes how many
+     pages come out, instead of clipping silently.
+     Deliberately not called `background` — that key is the Background line
+     in the header, and a duplicate key in character.js would overwrite it. */
+  const sections = [];
+
+  if(C.spellcasting){
+    const abilName = {str:"Strength",dex:"Dexterity",con:"Constitution",int:"Intelligence",wis:"Wisdom",cha:"Charisma"}[spellAbil];
+    sections.push('<div class="sp-head">'+
+      '<div class="box"><div class="v sm">'+(C.spellcasting.className||"")+'</div><div class="lbl">Spellcasting Class</div></div>'+
+      '<div class="box"><div class="v sm">'+abilName+'</div><div class="lbl">Ability</div></div>'+
+      '<div class="box"><div class="v">'+spellDC+'</div><div class="lbl">Spell Save DC</div></div>'+
+      '<div class="box"><div class="v">'+sign(spellAtk)+'</div><div class="lbl">Spell Attack</div></div></div>');
+
+    const spellRow = s => '<div class="spell"><span class="pip '+(s.pip||"filled")+'"></span><span class="bd">'+
+        '<span class="nm">'+s.name+'</span>'+(s.source?' <span class="de">· '+s.source+'</span>':'')+
+        '<br>'+s.text+'</span></div>';
+
+    if((C.cantrips||[]).length){
+      sections.push('<div class="slev"><div class="hdr"><div class="lv">0</div>'+
+        '<div class="ttl">Cantrips</div><div class="slots">At will</div></div>'+
+        C.cantrips.map(spellRow).join('')+'</div>');
+    }
+
+    const slots = (C.spellcasting.slots)||{};
+    Object.keys(slots).sort((a,b)=>Number(a)-Number(b)).forEach(function(lvl){
+      const list = C["spellsLevel"+lvl] || [];
+      sections.push('<div class="slev"><div class="hdr"><div class="lv">'+lvl+'</div>'+
+        '<div class="ttl">Level '+lvl+'</div><div class="slots">Slots '+
+        '<i class="cir"></i>'.repeat(slots[lvl])+'</div></div>'+
+        list.map(spellRow).join('')+'</div>');
+    });
+
+    if(C.spellFootnote) sections.push('<p class="footnote">'+C.spellFootnote+'</p>');
+  }
+
+  // companion accepts one object or an array of them (multiple constructs/pets)
+  ([]).concat(C.companion||[]).forEach(function(comp){
+    sections.push('<div class="panel"><h3>'+comp.title+'</h3>'+
+      (comp.statsHtml?'<p>'+comp.statsHtml+'</p>':'')+
+      (comp.linesHtml||[]).map(l=>'<p>'+l+'</p>').join('')+'</div>');
+  });
+
+  if((C.party||[]).length || C.partyBlankRows){
+    const rows = (C.party||[]).map(p =>
+        '<span class="pn">'+p.name+'</span><span class="pp">'+(p.player||"")+'</span>').join('')
+      + '<span class="bl"></span><span class="bl"></span>'.repeat(C.partyBlankRows||0);
+    sections.push('<div class="panel"><h3>'+(C.partyTitle||"The Party")+'</h3>'+
+      '<div class="party">'+rows+'</div></div>');
+  }
+
+  (C.panels||[]).forEach(function(p){
+    sections.push('<div class="panel'+(p.highlight?" warn":"")+'"><h3>'+p.title+'</h3>'+
+      (p.linesHtml||[]).map(l=>'<p>'+l+'</p>').join('')+'</div>');
+  });
+
+  const bg = C.biography;
+  (bg && bg.sections || []).forEach(function(sec){
+    const head = sec.heading ? '<h3>'+sec.heading+'</h3>' : '';
+    sections.push('<div class="bgflow'+(sec.aside?" bgaside":"")+'">'+head+sec.html+'</div>');
+  });
+
+  // any number of standalone images (portraits, drawings, maps, notebook
+  // pages, whatever) — each is its own section, flowed in wherever it lands
+  (C.images||[]).forEach(function(img){
+    sections.push('<div class="bgfig" style="height:'+(img.height||"2.4in")+'">'+
+      '<div class="im" style="background-image:url(\''+img.src+'\')"></div>'+
+      (img.caption ? '<div class="cap">'+img.caption+'</div>' : '')+'</div>');
+  });
+
+  // Pack sections two columns at a time. Each one is appended, measured
+  // against its column's real (rendered) height, and rolled to the next
+  // column — or a new page — the moment it doesn't fit.
+  const flowPages = [];
+  let curPage, curCols, curColIdx;
+  function newFlowPage(){
+    const pg = e("div","page");
+    pg.innerHTML = '<div class="flowhead"><span>'+C.name+'</span><span class="pn"></span></div>'+
+      '<div class="flowcols"><div class="col"></div><div class="col"></div></div>';
+    root.appendChild(pg);
+    flowPages.push(pg);
+    curPage = pg;
+    curCols = pg.querySelectorAll(".flowcols > .col");
+    curColIdx = 0;
+  }
+  function fits(col){ return col.scrollHeight <= col.clientHeight + 1; }
+  function place(html){
+    let col = curCols[curColIdx];
+    col.insertAdjacentHTML("beforeend", html);
+    if(fits(col)) return col;
+    const node = col.lastElementChild;
+    node.remove();
+    curColIdx++;
+    if(curColIdx > curCols.length - 1){ newFlowPage(); }
+    col = curCols[curColIdx];
+    col.insertAdjacentHTML("beforeend", html);
+    return col; // if it still doesn't fit alone, it's simply too big — let it clip and warn (below)
+  }
+
+  newFlowPage();
+  sections.forEach(html => place(html));
+
+  // Whatever's left on the last page becomes ruled notes: the rest of the
+  // column in use, plus any columns after it that were never touched. The
+  // filler has a min-height, so it can only go in the current column if
+  // there's genuinely room for it — otherwise that column is simply full.
+  const notesHtml = '<div class="flownotes"><div class="rules"></div><div class="lbl">Notes</div></div>';
+  const lastCol = curCols[curColIdx];
+  lastCol.insertAdjacentHTML("beforeend", notesHtml);
+  if(!fits(lastCol)) lastCol.lastElementChild.remove();
+  for(let i = curColIdx + 1; i < curCols.length; i++){
+    curCols[i].insertAdjacentHTML("beforeend", notesHtml);
+  }
+
+  flowPages.forEach(function(pg, i){
+    pg.querySelector(".flowhead .pn").textContent = "Page " + (i+2) + " of " + (flowPages.length+1);
+  });
+
+  /* ---------- toolbar ----------------------------------------------------- */
+  document.title = C.name + " — Character Sheet";
+  const tb = e("div","toolbar");
+  tb.innerHTML = '<strong>'+C.name+' — Character Sheet</strong>'+
+    '<button onclick="window.print()">Print / Save as PDF</button>'+
+    '<span>DC '+spellDC+' · atk '+sign(spellAtk)+' · passive '+passive+
+    ' — all derived from character.js</span>';
+  document.body.insertBefore(tb, root);
+
+  /* ---------- overflow check ----------------------------------------------
+     The page box is fixed, so anything too long is silently clipped in print.
+     Measure after layout and say so, rather than letting it vanish quietly. */
+  requestAnimationFrame(function(){
+    const inches = px => (px / 96).toFixed(2) + "in";
+    const bad = [];
+    root.querySelectorAll(".page").forEach(function(pg, i){
+      if(pg.scrollHeight > pg.clientHeight + 2)
+        bad.push("page " + (i+1) + " overflows by " + inches(pg.scrollHeight - pg.clientHeight));
+      pg.querySelectorAll(".col").forEach(function(c, j){
+        if(c.scrollHeight > c.clientHeight + 2)
+          bad.push("page " + (i+1) + " column " + (j+1) + " overflows by " + inches(c.scrollHeight - c.clientHeight));
+      });
+    });
+    if(bad.length){
+      const w = e("div");
+      w.style.cssText = "background:#7c1f1f;color:#fff;padding:.5rem 1rem;font:600 .8rem system-ui,sans-serif;";
+      w.textContent = "⚠ Content is being clipped — " + bad.join(" · ") + ". Trim character.js.";
+      tb.insertAdjacentElement("afterend", w);
+    }
+  });
+})();
+</script>
+</body>
+</html>
