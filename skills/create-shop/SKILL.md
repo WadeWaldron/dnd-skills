@@ -164,26 +164,46 @@ Players will roll the **Settlement Die** at the table to determine an item's ava
 | Weapon              | Cost      | Damage           | Scarcity Modifier |
 | :------------------ | :-------- | :--------------- | :---------------- |
 | **Simple Melee**    |           |                  |                   |
+| Club                | 1 sp      | 1d4 bludgeoning  | +2                |
 | Dagger              | 2 gp      | 1d4 piercing     | +1                |
+| Greatclub           | 2 sp      | 1d8 bludgeoning  | +1                |
 | Handaxe             | 5 gp      | 1d6 slashing     | +1                |
+| Javelin             | 5 sp      | 1d6 piercing     | +2                |
+| Light Hammer        | 2 gp      | 1d4 bludgeoning  | +1                |
 | Mace                | 5 gp      | 1d6 bludgeoning  | +1                |
 | Quarterstaff        | 2 sp      | 1d6 bludgeoning  | +2                |
+| Sickle              | 1 gp      | 1d4 slashing     | +1                |
 | Spear               | 1 gp      | 1d6 piercing     | +1                |
 | **Simple Ranged**   |           |                  |                   |
-| Light Crossbow      | 25 gp     | 1d8 piercing     | 0                 |
+| Crossbow, Light     | 25 gp     | 1d8 piercing     | 0                 |
+| Dart                | 5 cp      | 1d4 piercing     | +2                |
 | Shortbow            | 25 gp     | 1d6 piercing     | +1                |
+| Sling               | 1 sp      | 1d4 bludgeoning  | +2                |
 | **Martial Melee**   |           |                  |                   |
 | Battleaxe           | 10 gp     | 1d8 slashing     | 0                 |
+| Flail               | 10 gp     | 1d8 bludgeoning  | 0                 |
+| Glaive              | 20 gp     | 1d10 slashing    | -1                |
+| Greataxe            | 30 gp     | 1d12 slashing    | -1                |
 | Greatsword          | 50 gp     | 2d6 slashing     | -3                |
+| Halberd             | 20 gp     | 1d10 slashing    | -1                |
+| Lance               | 10 gp     | 1d12 piercing    | -2                |
 | Longsword           | 15 gp     | 1d8 slashing     | 0                 |
+| Maul                | 10 gp     | 2d6 bludgeoning  | -1                |
+| Morningstar         | 15 gp     | 1d8 piercing     | 0                 |
+| Pike                | 5 gp      | 1d10 piercing    | 0                 |
 | Rapier              | 25 gp     | 1d8 piercing     | -1                |
 | Scimitar            | 25 gp     | 1d6 slashing     | 0                 |
 | Shortsword          | 10 gp     | 1d6 piercing     | +1                |
+| Trident             | 5 gp      | 1d6 piercing     | +1                |
+| War Pick            | 5 gp      | 1d8 piercing     | 0                 |
 | Warhammer           | 15 gp     | 1d8 bludgeoning  | 0                 |
+| Whip                | 2 gp      | 1d4 slashing     | -1                |
 | **Martial Ranged**  |           |                  |                   |
-| Hand Crossbow       | 75 gp     | 1d6 piercing     | -3                |
-| Heavy Crossbow      | 50 gp     | 1d10 piercing    | -2                |
+| Blowgun             | 10 gp     | 1 piercing       | -3                |
+| Crossbow, Hand      | 75 gp     | 1d6 piercing     | -3                |
+| Crossbow, Heavy     | 50 gp     | 1d10 piercing    | -2                |
 | Longbow             | 50 gp     | 1d8 piercing     | -1                |
+| Net                 | 1 gp      | —                | -2                |
 
 ### Ammunition
 
@@ -196,16 +216,47 @@ Players will roll the **Settlement Die** at the table to determine an item's ava
 
 ### Tools
 
-| Tool                | Cost      | Scarcity Modifier |
-| :------------------ | :-------- | :---------------- |
-| Alchemist's supplies| 50 gp     | -2                |
-| Brewer's supplies   | 20 gp     | -1                |
-| Carpenter's tools   | 8 gp      | +1                |
-| Cook's utensils     | 1 gp      | +2                |
-| Jeweler's tools     | 25 gp     | -3                |
-| Smith's tools       | 20 gp     | +1                |
-| Tinker's tools      | 50 gp     | -2                |
-| Thieves' tools      | 25 gp     | -2                |
+| Tool                     | Cost      | Scarcity Modifier |
+| :----------------------- | :-------- | :---------------- |
+| **Artisan's Tools**      |           |                   |
+| Alchemist's supplies     | 50 gp     | -2                |
+| Brewer's supplies        | 20 gp     | -1                |
+| Calligrapher's supplies  | 10 gp     | -1                |
+| Carpenter's tools        | 8 gp      | +1                |
+| Cartographer's tools     | 15 gp     | 0                 |
+| Cobbler's tools          | 5 gp      | +1                |
+| Cook's utensils          | 1 gp      | +2                |
+| Glassblower's tools      | 30 gp     | -2                |
+| Jeweler's tools          | 25 gp     | -3                |
+| Leatherworker's tools    | 5 gp      | +1                |
+| Mason's tools            | 10 gp     | 0                 |
+| Painter's supplies       | 10 gp     | 0                 |
+| Potter's tools           | 10 gp     | 0                 |
+| Smith's tools            | 20 gp     | +1                |
+| Tinker's tools           | 50 gp     | -2                |
+| Weaver's tools           | 1 gp      | +1                |
+| Woodcarver's tools       | 1 gp      | +1                |
+| **Gaming Sets**          |           |                   |
+| Dice set                 | 1 sp      | +2                |
+| Dragonchess set          | 1 gp      | 0                 |
+| Playing card set         | 5 sp      | +2                |
+| Three-Dragon Ante set    | 1 gp      | 0                 |
+| **Musical Instruments**  |           |                   |
+| Bagpipes                 | 30 gp     | -2                |
+| Drum                     | 6 gp      | +1                |
+| Flute                    | 2 gp      | +1                |
+| Lute                     | 35 gp     | -1                |
+| Lyre                     | 30 gp     | -1                |
+| Pan flute                | 12 gp     | 0                 |
+| Shawm                    | 2 gp      | 0                 |
+| Viol                     | 30 gp     | -1                |
+| **Other Tools**          |           |                   |
+| Disguise kit             | 25 gp     | -2                |
+| Forgery kit              | 15 gp     | -3                |
+| Herbalism kit            | 5 gp      | 0                 |
+| Navigator's tools        | 25 gp     | -1                |
+| Poisoner's kit           | 50 gp     | -4                |
+| Thieves' tools           | 25 gp     | -2                |
 
 ### Mounts and Vehicles
 
@@ -237,3 +288,15 @@ Players will roll the **Settlement Die** at the table to determine an item's ava
 | Rare        | 501–5,000             | -8                |
 | Very Rare   | 5,001–50,000          | -13               |
 | Legendary   | 50,001+               | -18               |
+
+#### Common Magic Items (Select)
+
+| Item                      | Cost   | Description                                                                 |
+| :------------------------ | :----- | :-------------------------------------------------------------------------- |
+| **Cloak of Billowing**    | 50 gp  | You can use a bonus action to make this cloak billow dramatically.             |
+| **Clockwork Amulet**      | 100 gp | Once per day, you can skip rolling a d20 and treat the result as a 10.         |
+| **Enduring Spellbook**    | 100 gp | This book cannot be damaged by fire or water.                               |
+| **Heward's Spice Pouch**  | 50 gp  | Use an action to produce a pinch of any common seasoning (salt, pepper, etc). |
+| **Pole of Collapsing**    | 50 gp  | A 10-foot pole that can collapse into a 1-foot long rod.                    |
+| **Pot of Awakening**      | 100 gp | Plant a shrub in this pot; after 30 days, it becomes an Awakened Shrub.     |
+| **Wand of Smiles**        | 50 gp  | Use an action to force a creature to succeed a DC 10 Cha save or smile.     |
