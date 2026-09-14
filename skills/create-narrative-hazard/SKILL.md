@@ -1,101 +1,102 @@
 ---
 name: create-narrative-hazard
-description: Generates high-tension, non-combat encounters using Clocks and Position/Effect logic to create a frantic, "fiction-first" pace.
+description: Creates a high-tension, non-combat D&D encounter run with Progress and Danger clocks, Position, Edges, and Complications. Use when the user wants a narrative hazard, a skill challenge, a chase, an escape, or a "fiction-first" sequence such as fleeing a burning building or crossing a collapsing bridge.
 ---
 
 # Create Narrative Hazard
 
-This skill replaces traditional D&D turn-based mechanics with a "fiction-first" flow modeled after *Blades in the Dark*, but modified to fit D&D's mechanics and pacing. Actions always move the narrative forward, even on a failure.
+A narrative hazard is a non-combat encounter modeled after *Blades in the Dark* and adapted to D&D. Players describe what their characters do, and the fiction decides which skill or ability they roll. The consequences are mechanical: clocks, position, damage, conditions, and resources. Every roll moves the scene forward, and the party always reaches the goal. The Danger Clock decides what it costs them.
 
-## The Clocks
-Use clocks to track progress or encroaching danger.
-- **Progress Clock (Success):** Tracks the player's goal (e.g., "Escape the Sinking Ship").
-- **Danger Clock (Threat):** Tracks the environment's threat (e.g., "The Deck Submerges").
+## Workflow
 
-**Standard Sizes:** 4 segments (Quick/High Risk), 6 segments (Standard), 8 segments (Complex).
+1. **Gather the inputs.**
+   - Party level.
+   - The goal (what the party is trying to reach or do) and the threat (what is working against them).
+   - Where the hazard goes: a new document, or a heading inside an existing one (a dungeon room, a location, a session plan).
+   - Read related campaign files (Locations, NPCs, Encounters) for names, tone, and details.
+2. **Copy [assets/hazard-template.md](assets/hazard-template.md)** into the target document.
+   - The hazard heading can sit at any level. Keep every subheading one level below it, and the two Ending subheadings one level below Ending.
+3. **Fill in every placeholder.** Placeholders are the text in square brackets. Follow the rules below.
+4. **Validate.** From this skill's directory, run:
+   `python3 validate_hazard.py "{{document_path}}" --section "{{hazard_name}}"`
+   Fix every problem it lists and run it again. Repeat until it prints `PASS`.
+5. **Report** the hazard's location and give a one-line summary to the user.
 
-## The Outcome Ladder
-Use the relative difference between the roll and the **DC** to determine the outcome. **Every action ticks exactly one clock segment.**
+## Limits
 
-- **Succeed by 5+ (Critical Success):** Progress Clock +1, DM chooses 1 Edge.
-- **Succeed by 0–4 (Success):** Progress Clock +1, DM chooses 1 Complication.
-- **Fail by 1–4 (Partial Failure):** Danger Clock +1, DM chooses 1 Edge.
-- **Fail by 5+ (Critical Failure):** Danger Clock +1, DM chooses 1 Complication.
+- Copy all fixed text from the template word for word: the Position DCs, the Outcomes table, every Edge and Complication effect, and the Ending opening line.
+- Use only the Edges and Complications in the template, in the template's order. Do not add, remove, rename, or reword them.
+- Only the *In this hazard*, Opportunity, and Ending entries are written fresh. They describe how a fixed mechanic shows up in this scene. They never add a new mechanical effect.
+- Do not add sections, tables, or rules that are not in the template.
 
-## Edges
-The DM chooses one edge when the party succeeds or partially fails.
+## Rules
 
-1. **Advantage** — Your next roll has advantage.
-2. **Position Improves** — Party moves toward safer position (Desperate → Risky, Risky → Controlled).
-3. **Clear Path** — Next teammate can act without triggering complications.
-4. **Condition Removal** — Remove a condition from a character (with narrative justification).
-5. **Temporary Respite** — Gain temporary hit points. Scales by position:
-   - **Controlled**: 1d4 temp HP
-   - **Risky**: 1d6 temp HP
-   - **Desperate**: 1d8 temp HP
-6. **Gain Item** — Discover or obtain a useful item, tool, or resource.
+### Clocks
 
-## Complications
+- **Progress Clock:** the party's goal.
+- **Danger Clock:** the threat.
+- Each clock has 4 segments (quick), 6 segments (standard), or 8 segments (long). The two clocks can differ in size.
+- A normal action ticks exactly one clock. A targeted action ticks the Danger Clock on a failure and no clock on a success.
+- The hazard ends as soon as either clock fills.
 
-1. **Disadvantage** — Inflict disadvantage on your next roll.
-2. **Position Degrades** — Party moves toward more danger (Controlled → Risky, Risky → Desperate).
-3. **Damage** — Take damage. Scales by position:
-   - **Controlled**: 1d4 or 1d6 damage
-   - **Risky**: 1d10 damage
-   - **Desperate**: 2d10 damage
-4. **Condition** — Gain a condition (exhaustion, blinded, restrained, etc.).
-5. **Loss** — Lose something (item, progress, an NPC's support).
-6. **Cascading Failure** — Next teammate automatically gains a complication, regardless of their roll outcome.
+### Position
 
-## Position (The Stakes)
-Before the roll, establish the party's **Position** to determine the DC, and scaling for **Damage** and **Temporary Respite**.
+Position applies to the whole party. It sets the DC and the Damage dice. Only the Position Improves and Position Degrades results change it.
 
-- **Controlled:** Upper hand, environmental inconvenience only. **DC 13**.
-- **Risky:** Standard danger, shouldn't kill a healthy character. **DC 15**.
-- **Desperate:** Everything wrong, every hit matters. **DC 17**.
+DCs are 13 (Controlled), 15 (Risky), and 17 (Desperate) at every level. Damage is sized so the hazard costs resources without killing a healthy character:
 
-## Designing a Narrative Hazard
+- **Risky:** 1d6 per 3 party levels, rounded up.
+- **Desperate:** double the Risky dice.
+- **Controlled:** half the Risky dice, rounded up (1d4 at levels 1-3).
 
-To build a narrative hazard encounter, complete these steps:
+| Party Level | Controlled | Risky | Desperate |
+| ----------- | ---------- | ----- | --------- |
+| 1-3         | 1d4        | 1d6   | 2d6       |
+| 4-6         | 1d6        | 2d6   | 4d6       |
+| 7-9         | 2d6        | 3d6   | 6d6       |
+| 10-12       | 2d6        | 4d6   | 8d6       |
+| 13-15       | 3d6        | 5d6   | 10d6      |
+| 16-18       | 3d6        | 6d6   | 12d6      |
+| 19-20       | 4d6        | 7d6   | 14d6      |
 
-1. **Design the Clocks**
-   - Choose clock size: 4 segments (quick/high risk), 6 segments (standard), 8 segments (complex).
-   - Define what the Progress Clock represents (the party's goal).
-   - Define what the Danger Clock represents (the threat if they fail).
+Temporary Respite always uses the Controlled dice.
 
-2. **Define the Starting Position**
-   - Determine whether the party begins in **Controlled**, **Risky**, or **Desperate** position.
-   - This scales damage, temporary HP, and the narrative stakes of the hazard.
+### Taking Turns
 
-3. **Set Narrative Context**
-   - Describe the sensory landscape: what the party sees, hears, feels, smells.
-   - Establish what's happening, why it's urgent, and what's at stake.
+- Every character gets a turn before anyone takes a second one. The order within a round is flexible, and the DM can make exceptions when the fiction calls for it.
+- On their turn, a player describes an action. The DM picks the ability or skill that fits, and the player rolls against the current position's DC.
+- **Help:** A character can use their turn to help another. The helped roll has advantage.
+- **Spells and features:** A spell or feature that clearly accomplishes the action counts as a success on the Outcomes table without a roll.
 
-4. **Define Narrative Reasons for Edges and Complications**
-   - For each edge and complication, note how it manifests in this specific hazard.
-   - These are suggestions for you to use during play; improvise others as needed.
+### Outcomes
 
-5. **Describe How the Hazard Ends**
-   - What happens when Progress Clock fills (victory condition)?
-   - What happens when Danger Clock fills (defeat condition)?
-   - What are the specific consequences in each case?
+The Outcomes table in the template is the rule for each roll.
 
-## Hazard Document Format
+- **Result steps:** From lowest to highest, results are Fail by 5+, Fail by 1-4, Succeed by 0-4, and Succeed by 5+. Clear Path moves a result one step up and Cascading Failure moves it one step down. A result can't move past either end.
+- **Targeted action:** A player can aim an action at one Edge instead of the goal (for example, stabilizing a platform to improve position). It is either a success or a failure, with no partial result. A success gains that Edge and ticks no clock. A failure ticks the Danger Clock and gives no Edge or Complication.
 
-When creating a narrative hazard, include these sections in the final document:
+### Edges and Complications
 
-1. **Title & Overview** (1-2 sentences)
-2. **Narrative Context** (Descriptive text of what's happening, why it's urgent, and what the stakes are)
-3. **Clocks** (Progress and Danger, with segment sizes and what they represent)
-4. **Starting Position** (which position the party begins in)
-5. **Position Mechanics Reference** (a table or list showing DC, damage, and temp HP for all three positions)
-6. **Narrative Reasons for Edges and Complications** (how each mechanical outcome manifests in this specific hazard)
-7. **How the Hazard Ends** (what happens when Progress Clock fills; what happens when Danger Clock fills; specific victory/defeat conditions)
+The template's effect text is the rule for each Edge and Complication. For each one, the *In this hazard* line describes what it looks like in this scene.
 
-## Running the Hazard
-- **Pacing:** A 6-segment clock requires 6 successes (or 6 failures) to fill. Adjust clock size: 4 (quick), 6 (standard), 8 (complex).
-- **Narrative:** Players describe actions; DM assigns DC. Failures always change the situation—complications emerge, position worsens, or new truths are revealed.
-- **Targeted Outcomes:** Players can describe actions aimed at a specific edge or complication instead of advancing the goal. Example: "I'm trying to stabilize the platform to improve our position." 
-  - **Success**: You achieve the targeted outcome (e.g., Position Improves). The **Progress Clock does not tick**. This is the trade-off: you buy a better position for future rolls instead of advancing your goal.
-  - **Failure**: The **Danger Clock ticks +1**. A complication occurs, possibly related to your failed attempt (e.g., your stabilization attempt causes Position Degrades).
-  - This creates meaningful choice: push toward victory, or trade progress for better footing.
+- **Damage** names a damage type that fits the scene.
+- **Condition** names which of the listed conditions fits the scene.
+
+### Opportunities
+
+Opportunities are optional prizes the party can go after instead of pushing toward the goal.
+
+- Write at least two for each hazard.
+- The Opportunity Edge reveals one. Claiming it takes a successful targeted action.
+- Each Opportunity is one of these:
+  - **Treasure:** a reward that lasts beyond the hazard, such as loot, a magic item, a clue, or a grateful NPC. The effect says exactly what the party gains.
+  - **Aid:** something that helps within the hazard. The effect names one Edge (not Opportunity). Any character can spend an Aid at any time to gain that Edge. An unspent Aid is gone when the hazard ends.
+
+### Ending
+
+The party always reaches the goal.
+
+- **Progress Clock fills:** The party reaches the goal cleanly. Describe how, and where they end up.
+- **Danger Clock fills:** The party still reaches the goal, but pays for it:
+  - **Mechanical:** Choose the one that fits the threat. Either every character takes the Desperate damage dice for the party level with a fitting damage type, or every character gains 1 level of exhaustion. There is no saving throw.
+  - **Narrative:** A lasting setback, such as an alerted enemy, a damaged environment, or a harder next scene.
