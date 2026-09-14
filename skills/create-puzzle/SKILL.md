@@ -1,72 +1,81 @@
 ---
 name: create-puzzle
-description: This skill generates thematic, in-world puzzles and hazards for D&D encounters, moving away from abstract or "gamified" logic.
+description: Creates in-world D&D 5e environmental obstacles with several skill approaches, magic and tool solutions, and a mechanical fail-forward cost for each failure. Use when the user wants a puzzle, an obstacle, an environmental challenge, or a non-combat room that isn't a riddle or mini-game.
+license: CC0-1.0
+compatibility: Requires Python 3
+allowed-tools: Bash(python3 ${CLAUDE_SKILL_DIR}/scripts/*)
 ---
 
 # Create Puzzle
 
-This skill creates non-combat obstacles that feel like a natural part of the dungeon's environment and history. These are often better understood as "Environmental Skill Challenges" rather than abstract puzzles.
+Puzzles here are environmental obstacles, not riddles. Each one is a natural part of the place: a collapsed floor, a grease fire, deep mud, a flooded passage. The party gets past by choosing an approach. A failure still gets them through, but it costs them something.
 
-## Step 1: Define the Room's Context
-Before designing the challenge, establish:
-1.  **Original Functional Purpose:** What was this room built for? (e.g., A library, a kitchen, a forge, a barracks).
-2.  **Current State:** Why is it a challenge now? (e.g., Abandoned, decaying, occupied, malfunctioning magic, or literal geography like a swamp).
+## Workflow
 
-## Step 2: Mandatory Design Rules
-Every challenge must strictly adhere to the following three rules. If a design violates any of these, it must be discarded.
+1. **Gather the inputs.**
+   - Party level.
+   - The place: what it was built for, and why it is an obstacle now (abandoned, decaying, occupied, malfunctioning, or natural geography).
+   - Where the puzzle goes: a new document, or a heading inside an existing one (a dungeon room, a location).
+   - Read related campaign files (Locations, History) for details that shape the obstacle.
+2. **Copy [assets/puzzle-template.md](assets/puzzle-template.md)** into the target document.
+   - The puzzle heading can sit at any level. Keep every subheading one level below it.
+   - Add a third approach or a second spell by repeating the entry.
+3. **Fill in every placeholder** using the rules below.
+4. **Validate.** Run:
+   `python3 ${CLAUDE_SKILL_DIR}/scripts/validate_puzzle.py "{{document_path}}" --section "{{puzzle_name}}"`
+   Fix every problem it lists and run it again. Repeat until it prints `PASS`.
+5. **Report** the puzzle's location and give a one-line summary to the user.
 
-### Rule 1: The "Workplace Logic" Test
-The obstacle must be a natural, functional consequence of the room's original purpose or the environment's geography.
-- **The Test:** Ask "Would this hazard exist if there were no adventurers here?" (e.g., A kitchen fire exists because of cooking; a door locked by 'golden spoons' only exists for players).
-- **Forbidden:** Abstract riddles, "collect-the-item" gates, or arbitrary mini-games (e.g., chess tiles, glowing motes, numerical levers).
+## Rules
 
-### Rule 2: Mechanical Weight
-Environmental effects must have explicit mechanical consequences.
-- *Dense Fog* isn't just flavor; it creates Heavily Obscured areas that affect combat and navigation.
-- *Deep Mud* isn't just flavor; it requires Acrobatics or special gear to avoid becoming *Restrained*.
+### Workplace Logic
 
-### Rule 3: Fail Forward (Consequences)
-Failure on a check must never result in a complete dead-end. Instead, players "succeed at a cost." Choose a cost that is detectable and manageable within the dungeon's structure:
-- **Immediate Damage:** Physical harm or environmental injury. Use the `damage-severity` skill.
-- **Attrition (Levels of Exhaustion):** Physical or mental strain that lingers (e.g., navigating a frozen pass or toxic swamp).
-- **Asset/Resource Loss:** Explicit loss of gear (broken shield, snapped rope) or depletion of consumables (ruined rations, lost ammunition).
-- **Dungeon Alert State:** Failure creates noise or visible signs of passage. *Effect:* The next encounter in the dungeon starts with the party **Surprised** or the enemies in a **Defensive Position** (+2 AC for the first round).
-- **Tactical Disadvantage:** Players arrive at the far side of the hazard in a compromised state (e.g., split party, Prone, or with one character isolated).
-- **The "High Cost" Path:** Players eventually succeed, but only by taking a longer, more dangerous route that triggers an extra **Nuisance** or **Moderate** encounter. (Requires the `create-encounter` skill).
+The obstacle exists because of what the place is or was, not because adventurers showed up. Ask: "Would this be here if nobody came?" A kitchen fire exists because of cooking. A door that needs three golden spoons only exists for players.
 
-### Rule 4: Explicit Difficulty
-Every skill check or saving throw must include a specific **Difficulty Class (DC)**.
-- **The Process:** Use the **difficulty-class** skill to determine the appropriate DC based on the intended difficulty (e.g., Moderate = DC 15).
-- **Presentation:** Always present the DC alongside the skill name (e.g., "DC 14 Athletics").
+No abstract riddles, collect-the-item gates, or mini-games such as chess tiles, glowing orbs, or numbered levers.
 
-## Step 3: Architecture of the Challenge
-Every challenge must support multiple solutions.
+### Resolving the Puzzle
 
-1.  **Skills:** Allow 2-3 different skill checks (e.g., Survival to find a path, Athletics to row, Investigation to spot a flaw).
-2.  **Magic:** Identify 1-2 types of spells that would bypass or mitigate the hazard (e.g., *Levitate* for mud, *Control Flames* for fire).
-3.  **Practical Solutions:** Reward the use of Tools or creative mundane solutions (e.g., crafting "swamp shoes" with leatherworker tools, using a rope to tie characters together).
+A character picks one solution:
 
-## Examples for Inspiration
+- **Approaches:** 2 or 3 skill checks, each using a different skill. One check decides the outcome. On a success the party gets through. On a failure the party still gets through and pays that approach's cost.
+- **Magic:** 1 or 2 spells that solve the obstacle with no check. The spell slot is the cost.
+- **Practical Solution:** 1 tool check that works like an approach, with its own DC and cost.
+
+### DCs
+
+Each check is labeled Easy (DC 10), Moderate (DC 15), or Hard (DC 20), matching the **difficulty-class** skill. An easier approach can carry a harsher cost.
+
+### Fail-Forward Costs
+
+Every approach and the practical solution have one cost, which starts with its type. Each cost has exact mechanics:
+
+- **Damage:** dice, a damage type, and severity, such as `2d10 fire damage (Nuisance)`. Use the dice from the **damage-severity** skill's table for the party level and severity. Say who takes it.
+- **Exhaustion:** how many levels of exhaustion, and who gains them.
+- **Resource Loss:** exactly what is lost, such as a broken shield, 1d4 ruined rations, or 50 feet of rope.
+- **Alert:** the next encounter starts with the party surprised or the enemies gaining +2 AC for the first round.
+- **Tactical Disadvantage:** the exact situation the party arrives in, such as split up, prone, or one character isolated on the far side.
+- **High Cost Path:** the party takes a longer route that adds a Low or Moderate encounter, built with the **create-encounter** skill.
+
+## Examples
 
 ### The Kitchen
-- **GOOD:** A grease fire has attracted **Smoke Mephits**. Players must extinguish the fire or use *Control Flames* to safely reach the pantry.
-- **BAD:** A magical door that won't open unless the players find 3 "golden spoons" hidden in the cupboards.
+- **Good:** A grease fire has drawn smoke mephits. The party must put out the fire, or use *Control Flames*, to reach the pantry.
+- **Bad:** A magic door that won't open until the party finds three golden spoons hidden in the cupboards.
 
 ### The Forge
-- **GOOD:** The furnace is overheating, creating extreme heat damage. Players must repair a ruptured cooling pipe or manually vent the steam to pass.
-- **BAD:** A series of numerical levers (1-4-2-3) that must be pulled in order to unlock a weapon rack.
+- **Good:** The furnace is overheating and the heat is dangerous. The party must repair a cooling pipe or vent the steam to get through.
+- **Bad:** Numbered levers (1-4-2-3) that must be pulled in order to unlock a weapon rack.
 
 ### The Barracks
-- **GOOD:** The floor has partially collapsed. Players must navigate narrow support beams or use magic to reach the far side.
-- **BAD:** A chessboard-patterned floor where players can only move in "L-shapes" like knights to avoid pressure plates.
+- **Good:** The floor has partly collapsed. The party must cross narrow support beams or use magic to reach the far side.
+- **Bad:** A chessboard floor where characters can only move like knights to avoid pressure plates.
 
-### The Swamp (Environment)
-- **GOOD:** An "impassable" stretch of deep, sucking mud. Players can use magic (*Levitate*), Survival/Investigation checks to find a firm path, or a Tool Check (Carpenter/Leatherworker) to craft "swamp shoes." The challenge is an inherent property of the geography.
-- **BAD:** A series of giant stone frogs that must be fed specific "swamp berries" in a certain order to make a bridge appear.
+### The Swamp
+- **Good:** A stretch of deep, sucking mud. The party can use *Levitate*, Survival or Investigation to find firm ground, or leatherworker's tools to make swamp shoes.
+- **Bad:** Giant stone frogs that must be fed swamp berries in a certain order to raise a bridge.
 
-### The Razor Straits (Navigation)
-- **GOOD:** Navigating a small boat through razor-sharp rocks in high surf. Success requires a sequence of Skill Checks (Athletics to row, Perception to spot rocks, Water Vehicles tool check). Failure causes boat damage or forced setbacks.
-- **BAD:** A magical barrier that asks a riddle about "what has teeth but cannot bite" before the rocks disappear.
+## Limits
 
-## Step 4: Scale the Threat
-Use the **damage-severity** skill to ensure hazards present a legitimate threat (Nuisance vs. Deadly) based on the party's level.
+- Do not add sections or fields that are not in the template.
+- Every check has a DC that matches its label, and every failure has a cost from the list above.

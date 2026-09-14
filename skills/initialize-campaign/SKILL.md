@@ -1,6 +1,9 @@
 ---
 name: initialize-campaign
 description: Creates a folder structure for a new D&D campaign. Use this when the user types "initialize-campaign" or "create campaign folders".
+license: CC0-1.0
+compatibility: Requires Python 3
+allowed-tools: Bash(python3 ${CLAUDE_SKILL_DIR}/scripts/*)
 ---
 
 # Initialize Campaign Skill
@@ -18,8 +21,8 @@ initialize-campaign
 
 All folder and file changes are made by the script. Do not create folders, write `AGENTS.md`, or edit `CLAUDE.md` by hand.
 
-1. Run the script from this skill's directory, passing the campaign root:
-   `python3 init_campaign.py "{{campaign_root}}"`
+1. Run the script, passing the campaign root:
+   `python3 ${CLAUDE_SKILL_DIR}/scripts/init_campaign.py "{{campaign_root}}"`
 2. Relay the script's output to the user.
 3. Review **Other folders** for campaign-specific names that overlap a canonical folder, such as `Items/` beside `Magic-Items/`. Name each pair so the user can move the content or delete the empty folder. Do not attempt either on your own.
 

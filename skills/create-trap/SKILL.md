@@ -1,56 +1,80 @@
 ---
 name: create-trap
-description: Generates thematic, mechanical, and magical traps that serve a logical purpose within a dungeon or structure.
+description: Creates thematic D&D 5e traps with a telegraph, trigger, detection and disable DCs, a mechanical effect, and magical countermeasures, all scaled to party level. Use when the user wants a trap, a security measure, or a dangerous mechanism for a dungeon, vault, or building.
+license: CC0-1.0
+compatibility: Requires Python 3
+allowed-tools: Bash(python3 ${CLAUDE_SKILL_DIR}/scripts/*)
 ---
 
 # Create Trap
 
-This skill generates traps that are more than just "gotcha" moments—they are functional security measures, natural hazards, or environmental instabilities that fit the dungeon's history.
+Traps are functional security measures, workplace hazards, or decaying structures that fit the place they are in. Every trap warns the party, can be found and disabled, and changes the party's situation when it goes off.
 
-## Step 1: Define the Purpose and Nature
-Before designing the trap, identify its role and type:
-1.  **Intentional Security:** Built to keep intruders out (e.g., a vault lock, a bedroom needle).
-2.  **Environmental Hazard:** Natural instabilities or dangerous workplace conditions (e.g., a rotting floor in a mine, a leaking steam pipe in a forge).
-3.  **Execution:** Designed to kill or maim anyone who triggers it (e.g., a pit of spikes, a falling blade).
-4.  **Alarm:** Built to alert the inhabitants of an intrusion (e.g., a bell, a thunder trap).
-5.  **Deterrent/Change:** Designed to slow down, weaken, or isolate intruders (e.g., a glue trap, a slowing gas).
+## Workflow
 
-## Step 2: Design Rules
+1. **Gather the inputs.**
+   - Party level.
+   - Where the trap is and who built it, or what caused it.
+   - Severity: Nuisance or Deadly.
+   - Where the trap goes: a new document, or a heading inside an existing one (a dungeon room, a location).
+   - Read related campaign files (Locations, Organizations, History) for details that shape the trap.
+2. **Copy [assets/trap-template.md](assets/trap-template.md)** into the target document.
+   - The trap heading can sit at any level. Keep every subheading one level below it.
+3. **Fill in every placeholder** using the rules below. Where the template offers a choice with OR, keep one option.
+4. **Validate.** Run:
+   `python3 ${CLAUDE_SKILL_DIR}/scripts/validate_trap.py "{{document_path}}" --section "{{trap_name}}"`
+   Fix every problem it lists and run it again. Repeat until it prints `PASS`.
+5. **Report** the trap's location and give a one-line summary to the user.
 
-### Rule 1: Mechanical Components
-Every trap must have three defined components:
-- **Trigger:** How is it activated? (e.g., Pressure plate, tripwire, weight of a person on a weak beam, opening a door).
-- **Effect:** What happens when it triggers? (e.g., Dart fire, floor collapse, poison gas, magical explosion).
-- **Countermeasure:** How can it be spotted and disabled? (e.g., DC 15 Perception to spot the wire, DC 15 Thieves' Tools to jam the mechanism).
+## Rules
 
-### Rule 2: Workplace Logic
-The trap must make sense for the original builders or the current state of decay.
-- **Example:** A library might have a *Silence* trap to prevent spellcasting thieves from using *Knock* or *Dimension Door*; a forge might have a trap that releases molten lead; a flooded mine has unstable, water-logged ceiling beams.
-- **Forbidden:** A complex blade trap in a room the inhabitants use every day as a hallway (unless there's a clear bypass).
+### Purpose
 
-### Rule 3: Mechanical Weight & Synergy
-Triggering a trap must create a meaningful change in the party's situation. Isolated effects that don't impact the immediate gameplay are flavor, not traps.
-- **Immediate Damage:** Use the `damage-severity` skill.
-- **Tactical Synergy (The "So What?" Test):** If a trap doesn't deal damage, it must create a disadvantage for an upcoming challenge.
-    - *Bad Silence Trap:* "The room is quiet." (No consequence).
-    - *Good Silence Trap:* "The room is quiet, preventing verbal spells during the ambush that just started," or "The silence alerts a lookout who noticed the music stopped."
-- **Environmental Complication:** The trap permanently changes the battlefield (e.g., covers the floor in grease, fills the air with obscuring smoke, or locks the only exit).
-- **Resource Attrition:** The trap destroys or depletes items (e.g., rusts a shield, ruins 1d4 rations, or drains a spell slot).
+Every trap has one purpose:
 
-### Rule 4: The "Telegraph" (Mandatory Hint)
-To avoid "gotcha" gameplay, every trap must include at least one **Telegraph**—a sensory clue that something is wrong. Players should never feel they must roll Perception every 10 feet; the description should prompt the roll.
-- **Auditory:** The sound of shifting stone, a faint rhythmic clicking, or the hiss of pressurized air.
-- **Visual:** Scuff marks on a floor (indicating a swinging blade), a bit of dried blood on a latch, or glowing runes that flicker.
-- **Tactical:** A slight draft of air where there should be none, or an unusual smell (oil, ozone, rot).
+- **Intentional Security:** keeps intruders out (a vault lock, a poisoned needle in a jewelry box).
+- **Environmental Hazard:** a natural or workplace danger (a rotting mine floor, a leaking steam pipe).
+- **Execution:** built to kill or maim (a spiked pit, a falling blade).
+- **Alarm:** alerts the inhabitants (a bell, a thunder glyph).
+- **Deterrent:** slows, weakens, or isolates intruders (a glue trap, a slowing gas).
 
-## Step 3: Architecture of a Trap
-Traps should provide multiple ways to interact. The description should lead with the telegraph.
+### Workplace Logic
 
-1.  **The Hint (Telegraph):** Describe the sensory clue the players receive as they approach or enter the area.
-2.  **Detection:** Identify the DC for **Wisdom (Perception)** or **Intelligence (Investigation)** once the players decide to look closer.
-3.  **Disabling:** Identify the DC for **Dexterity (Thieves' Tools)** or **Strength (Athletics)** to jam it.
-4.  **Mitigation:** Identify 1-2 ways magic or specialized gear can help (e.g., *Mending* to fix a wire, *Misty Step* to bypass a plate).
+The trap makes sense for the people who built it or for the state the place is in now. A library might protect its vault from teleporting thieves. A forge might pour molten lead. A room the inhabitants walk through every day has no blade trap unless there is a clear bypass.
 
-## Step 4: Scale the Danger
-Use the **difficulty-class** skill for checks and the **damage-severity** skill for harm, based on the party's level and the trap's intended lethality.
+### Telegraph
 
+Every trap has a sensory clue the party notices before it triggers, such as shifting stone, faint clicking, scuff marks, dried blood on a latch, a draft, or the smell of oil. The clue prompts players to look closer. It is never hidden behind a check.
+
+### Severity and Numbers
+
+| Severity | DCs (Detection, Save, Disable) | Attack Bonus |
+| -------- | ------------------------------ | ------------ |
+| Nuisance | 10-15                          | +3 to +5     |
+| Deadly   | 15-20                          | +6 to +9     |
+
+Damage comes from the **damage-severity** skill's table for the party level and severity. Use one of the dice options it lists.
+
+### Detection
+
+One or two checks, using Wisdom (Perception) or Intelligence (Investigation). Each says what a success reveals.
+
+### Effect
+
+- Exactly one of a saving throw or an attack roll.
+- **Damage** is dice and a damage type, or None.
+- **Consequence** changes the party's situation beyond hit points. A trap with no damage must have one. Every consequence is one of these, with exact mechanics and a duration:
+  - **Condition:** a condition, who it affects, and how it ends.
+  - **Environmental Complication:** a lasting change to the area, such as difficult terrain, heavy obscurement, or a sealed exit.
+  - **Resource Attrition:** a specific loss, such as a destroyed shield, 1d4 ruined rations, or an expended spell slot.
+  - **Alarm:** who is alerted and what they do, such as the next encounter starting with the party surprised.
+
+### Countermeasures
+
+- **Disable:** one ability check with a DC, usually Dexterity (Thieves' Tools) or Strength (Athletics), and what disabling looks like.
+- **Magic:** one or two spells that bypass or stop the trap, and how.
+
+## Limits
+
+- Do not add sections or fields that are not in the template.
+- Every DC, attack bonus, and damage roll follows the Severity and Numbers rules.

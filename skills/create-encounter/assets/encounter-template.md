@@ -13,9 +13,8 @@
 
 - [N] × [Creature] (CR [x], [xp] XP each) = [subtotal] XP
 - [N] × [Creature] (CR [x], [xp] XP each) = [subtotal] XP
-- Raw XP = [total]
-- Encounter multiplier ([N] creatures) = [x]×
-- **Total: [adjusted] XP ([Difficulty] difficulty)**
+- Party budgets ([party]): Low [xp], Moderate [xp], High [xp]
+- **Total: [total] XP ([Difficulty] difficulty)**
 
 ### Statistics
 
@@ -24,8 +23,8 @@
 
 *[Size] [type], [alignment]*
 
-| STR | DEX | CON | INT | WIS | CHA |
-|---------|---------|---------|---------|---------|---------|
+| STR      | DEX      | CON      | INT      | WIS      | CHA      |
+| -------- | -------- | -------- | -------- | -------- | -------- |
 | [x (+x)] | [x (+x)] | [x (+x)] | [x (+x)] | [x (+x)] | [x (+x)] |
 
 - **Armor Class** [x]

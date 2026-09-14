@@ -1,6 +1,7 @@
 ---
 name: difficulty-class
-description: This skill will give a sense of the difficulty class (DC) for skills, saving throws, and other D20-based checks. This skill can be used any time we need to determine the likelihood of a character successfully completing a task or resisting an effect. This skill can be used in conjunction with other skills or as part of another command to determine potential DCs for an effect.
+description: Gives the DC for D&D 5e ability checks, saving throws, and other d20 rolls, from Very Easy (5) to Nearly Impossible (30). Use when setting a DC for a task, a hazard, a trap, or an effect a character has to resist.
+license: CC0-1.0
 ---
 
 # Difficulty Class (DC)

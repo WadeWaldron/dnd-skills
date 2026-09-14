@@ -13,7 +13,7 @@ from pathlib import Path
 
 def load_creatures():
     """Load creatures from monsters.json."""
-    json_path = Path(__file__).parent / "monsters.json"
+    json_path = Path(__file__).parent.parent / "assets" / "monsters.json"
     with open(json_path, 'r') as f:
         data = json.load(f)
     return data.get("creatures", [])

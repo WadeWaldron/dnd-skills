@@ -15,12 +15,23 @@ Use detailed knowledge of the D&D 5e rules, including the 2024 rules, when writi
 
 - Each skill lives in `skills/<skill-name>/` with a `SKILL.md` at its root.
 - `SKILL.md` starts with frontmatter holding `name` and `description`. `name` matches the directory name, in kebab-case.
+- The frontmatter also has `license: CC0-1.0`. Skills with scripts add `compatibility: Requires Python 3`, and skills with other environment needs describe them in `compatibility`.
+- Skills with scripts add `allowed-tools: Bash(python3 ${CLAUDE_SKILL_DIR}/scripts/*)`, so Claude Code runs the skill's own scripts without asking for approval. The rule only matches commands written with `${CLAUDE_SKILL_DIR}`.
 - The `description` is what an agent uses to decide whether to load the skill. Say what the skill does and when to use it, including phrases a user is likely to type.
-- Keep `SKILL.md` focused on the workflow. Move long reference material, templates, and data into separate files in the skill directory and link to them with relative paths.
-- Anything that needs exact math or real randomness (XP budgets, dice rolls, data lookups, file creation) goes in a Python script, not in LLM reasoning. `SKILL.md` gives the exact `python3` command to run from the skill's directory.
+- Keep `SKILL.md` focused on the workflow. Move long reference material, templates, and data into separate files and link to them with relative paths.
+- Anything that needs exact math or real randomness (XP budgets, dice rolls, data lookups, file creation) goes in a Python script, not in LLM reasoning. `SKILL.md` gives the exact command as `python3 ${CLAUDE_SKILL_DIR}/scripts/<name>.py`.
+- Skills that produce a document follow a fill-in template and include a validation script that checks the finished document. The validator finds the document by heading, so it works when the content sits inside a larger file.
 - Scripts use only the Python 3 standard library.
-- Skills can call on other skills by name (for example, `create-encounter` uses `calculate-xp-threshold`, `lookup-creatures`, and `validate-encounter`). Keep each skill usable on its own.
+- Skills can call on other skills by name (for example, `create-encounter` uses `lookup-creatures` and `customize-creature`). Keep each skill usable on its own.
 - Skills can read campaign folders for context (NPCs, Locations, Monsters, and so on). The folder names are defined by `initialize-campaign`.
+
+### Skill Folders
+
+Files other than `SKILL.md` go in these subfolders, following the [Agent Skills](https://agentskills.io) standard. Create only the folders a skill needs.
+
+- `scripts/` - Code the agent runs, such as calculators, generators, and validators. Scripts find other skill files relative to their own location (`Path(__file__).parent.parent`), never the working directory.
+- `assets/` - Files used in the skill's output or read by its scripts: fill-in templates, files copied into a campaign unchanged (such as the character sheet's `sheet.html` and `cards.html`), and data files (such as `monsters.json`).
+- `references/` - Documentation the agent reads only when a step calls for it, such as the dungeon room types.
 
 ## Adding or Changing a Skill
 

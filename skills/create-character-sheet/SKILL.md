@@ -1,6 +1,8 @@
 ---
 name: create-character-sheet
 description: Creates a printable D&D 5e character sheet and spell cards for a player character, driven by a single data file. Use when the user wants to make a character sheet, start a new character, or level one up.
+license: CC0-1.0
+compatibility: Requires a web browser to view and print the sheet
 ---
 
 # Create Character Sheet

@@ -1,6 +1,7 @@
 ---
 name: customize-creature
-description: A skill for customizing a creature's stats, abilities, and traits based on a base creature template. This allows for quick creation of unique monsters or NPCs by modifying existing stat blocks.
+description: Reskins a D&D 5e monster into a new creature or NPC by changing its name, description, and flavor while keeping its stats, CR, and XP exactly the same. Use when the user wants a custom monster, a themed version of an existing creature, or an NPC built from a stat block.
+license: CC0-1.0
 ---
 
 # Customize Creature

@@ -1,6 +1,9 @@
 ---
 name: lookup-creatures
-description: A skill that looks up creatures from D&D 5e based on criteria. Useful for finding appropriate monsters to build encounters.
+description: Searches the D&D 5e monster list by XP, type, environment, and size, and returns full stat blocks by name. Use when the user wants monster ideas, a stat block, or creatures that fit a theme or XP budget.
+license: CC0-1.0
+compatibility: Requires Python 3
+allowed-tools: Bash(python3 ${CLAUDE_SKILL_DIR}/scripts/*)
 ---
 
 # Lookup Creatures
@@ -19,7 +22,7 @@ Use this to find a "menu" of potential monsters based on theme, environment, and
 - `--max-results`: Default 10.
 
 ### Example:
-`python3 lookup_creatures.py --environments "Forest" --types "Beast" --target-xp 450`
+`python3 ${CLAUDE_SKILL_DIR}/scripts/lookup_creatures.py --environments "Forest" --types "Beast" --target-xp 450`
 
 ## Phase 2: Detail (Get Statblocks)
 
@@ -30,7 +33,7 @@ Once you have selected the specific creatures for your encounter, use this to re
 - `--full`: Force output of full Markdown statblocks.
 
 ### Example:
-`python3 lookup_creatures.py --names "Dire Wolf, Wolf" --full`
+`python3 ${CLAUDE_SKILL_DIR}/scripts/lookup_creatures.py --names "Dire Wolf, Wolf" --full`
 
 ## Guidelines for the Assistant
 1. **Curate the Menu:** When searching for candidates, present the summary table to the user and explain *why* these monsters fit the requested theme.

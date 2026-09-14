@@ -32,7 +32,7 @@ FOLDERS = [
 AGENTS_CANDIDATES = ["AGENTS.md", ".agents/AGENTS.md"]
 CLAUDE_CANDIDATES = ["CLAUDE.md", ".claude/CLAUDE.md"]
 
-ASSETS = Path(__file__).parent / "assets"
+ASSETS = Path(__file__).parent.parent / "assets"
 AGENTS_IMPORT = re.compile(r"^@(\S*AGENTS\.md)\s*$")
 
 
