@@ -1,6 +1,7 @@
 ---
 name: create-dungeon
-description: This skill will generate a dungeon by selecting and customizing a variety of room types to create a structured and engaging adventure.
+description: Designs a D&D 5e dungeon around five narrative beats, with rooms chosen from room types, encounters, puzzles, traps, treasure, and an ASCII map. Use when the user wants a dungeon, a lair, a tower, ruins, or any multi-room adventure site.
+license: CC0-1.0
 ---
 
 # Generate Dungeon
@@ -46,18 +47,18 @@ For every dungeon, ensure at least one **Narrative Hazard** is integrated into t
 - **Execution:** Use the **create-narrative-hazard** skill to generate the specific mechanics and clocks for this segment.
 
 ## Step 5: Component Selection
-Generate details for each room by selecting appropriate categories from `room-types/`. For larger dungeons, group multiple types under a single beat.
+Generate details for each room by selecting appropriate categories from `references/room-types/`. For larger dungeons, group multiple types under a single beat.
 
-- [The Combat](room-types/01-combat.md) (Best for Guardians and Climaxes)
-- [The Cache](room-types/02-cache.md) (Best for Revelations)
-- [The Sidekick](room-types/03-sidekick.md) (Good for Roleplay)
-- [The Offshoot](room-types/04-offshoot.md) (Exploration/Flavor)
-- [The Foreshadowing](room-types/05-foreshadowing.md) (Atmosphere/Setup)
-- [The History](room-types/06-history.md) (Lore/Puzzles)
-- [The Oddity](room-types/07-oddity.md) (Memorable moments/Tricks)
-- [The Forge](room-types/08-forge.md) (Crafting/Upgrade opportunities)
-- [The Factions](room-types/09-factions.md) (Social dynamics/Setbacks)
-- [The Map](room-types/10-map.md) (Navigation/Discovery)
+- [The Combat](references/room-types/01-combat.md) (Best for Guardians and Climaxes)
+- [The Cache](references/room-types/02-cache.md) (Best for Revelations)
+- [The Sidekick](references/room-types/03-sidekick.md) (Good for Roleplay)
+- [The Offshoot](references/room-types/04-offshoot.md) (Exploration/Flavor)
+- [The Foreshadowing](references/room-types/05-foreshadowing.md) (Atmosphere/Setup)
+- [The History](references/room-types/06-history.md) (Lore/Puzzles)
+- [The Oddity](references/room-types/07-oddity.md) (Memorable moments/Tricks)
+- [The Forge](references/room-types/08-forge.md) (Crafting/Upgrade opportunities)
+- [The Factions](references/room-types/09-factions.md) (Social dynamics/Setbacks)
+- [The Map](references/room-types/10-map.md) (Navigation/Discovery)
 
 ## Step 5: Puzzle and Encounter Generation
 For each room in the dungeon, generate the necessary challenges:

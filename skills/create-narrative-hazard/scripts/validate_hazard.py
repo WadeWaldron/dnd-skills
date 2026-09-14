@@ -12,7 +12,7 @@ import re
 import sys
 from pathlib import Path
 
-TEMPLATE_PATH = Path(__file__).parent / "assets" / "hazard-template.md"
+TEMPLATE_PATH = Path(__file__).parent.parent / "assets" / "hazard-template.md"
 
 SUBSECTIONS = [
     "Narrative Context",

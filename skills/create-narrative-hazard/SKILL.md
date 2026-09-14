@@ -1,6 +1,9 @@
 ---
 name: create-narrative-hazard
 description: Creates a high-tension, non-combat D&D encounter run with Progress and Danger clocks, Position, Edges, and Complications. Use when the user wants a narrative hazard, a skill challenge, a chase, an escape, or a "fiction-first" sequence such as fleeing a burning building or crossing a collapsing bridge.
+license: CC0-1.0
+compatibility: Requires Python 3
+allowed-tools: Bash(python3 ${CLAUDE_SKILL_DIR}/scripts/*)
 ---
 
 # Create Narrative Hazard
@@ -17,8 +20,8 @@ A narrative hazard is a non-combat encounter modeled after *Blades in the Dark* 
 2. **Copy [assets/hazard-template.md](assets/hazard-template.md)** into the target document.
    - The hazard heading can sit at any level. Keep every subheading one level below it, and the two Ending subheadings one level below Ending.
 3. **Fill in every placeholder.** Placeholders are the text in square brackets. Follow the rules below.
-4. **Validate.** From this skill's directory, run:
-   `python3 validate_hazard.py "{{document_path}}" --section "{{hazard_name}}"`
+4. **Validate.** Run:
+   `python3 ${CLAUDE_SKILL_DIR}/scripts/validate_hazard.py "{{document_path}}" --section "{{hazard_name}}"`
    Fix every problem it lists and run it again. Repeat until it prints `PASS`.
 5. **Report** the hazard's location and give a one-line summary to the user.
 

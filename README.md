@@ -11,7 +11,7 @@ The repository features a comprehensive suite of tools for campaign management a
 
 ### Adventure Design
 - **[create-dungeon](skills/create-dungeon/SKILL.md)**: Generates structured dungeon layouts with variety and purpose.
-- **[create-encounter](skills/create-encounter/SKILL.md)**: An orchestrator skill that coordinates balancing and creature selection into a thematic workflow.
+- **[create-encounter](skills/create-encounter/SKILL.md)**: Builds balanced combat encounters from 2024 XP budgets, or checks the difficulty of an existing one.
 - **[create-narrative-hazard](skills/create-narrative-hazard/SKILL.md)**: Generates high-tension, "fiction-first" encounters using Clocks and Position/Effect logic.
 - **[create-puzzle](skills/create-puzzle/SKILL.md)**: Creates thematic, in-world environmental challenges with meaningful consequences.
 - **[create-shop](skills/create-shop/SKILL.md)**: Generates a thematic shop with inventory based on settlement size and item scarcity.
@@ -19,9 +19,7 @@ The repository features a comprehensive suite of tools for campaign management a
 - **[create-treasure](skills/create-treasure/SKILL.md)**: Generates balanced, theme-appropriate loot and magic items.
 
 ### Mechanics & Balancing
-- **[calculate-xp-threshold](skills/calculate-xp-threshold/SKILL.md)**: Calculates XP budgets for a party based on level and size.
 - **[lookup-creatures](skills/lookup-creatures/SKILL.md)**: Searches monster databases for creatures by environment, type, and XP.
-- **[validate-encounter](skills/validate-encounter/SKILL.md)**: Mathematically validates encounter balance using DMG multipliers.
 - **[customize-creature](skills/customize-creature/SKILL.md)**: Adapts standard monster templates to new themes without changing their mechanical bones.
 
 ### Player Characters
@@ -57,6 +55,8 @@ ln -s "$PWD/dnd-skills/skills" ~/.agents/skills
 ```
 
 Any agent that supports the Agent Skills standard can read `skills/` directly — each subdirectory is a self-contained skill.
+
+Skill commands use `${CLAUDE_SKILL_DIR}`, which Claude Code fills in with the skill's folder. In other agents, set `CLAUDE_SKILL_DIR` to the skill's folder before running a script, or run it from inside that folder with the `${CLAUDE_SKILL_DIR}/` prefix removed.
 
 ## Setting up a campaign
 

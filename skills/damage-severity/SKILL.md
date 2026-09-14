@@ -1,6 +1,7 @@
 ---
 name: damage-severity
 description: This skill provides guidance on assessing damage severity (Nuisance vs. Deadly) based on character level and offers a reference for improvising damage from environmental hazards such as traps, fire, and lava. Use this to determine appropriate damage thresholds and dice for various game effects.
+license: CC0-1.0
 ---
 
 # Damage Severity

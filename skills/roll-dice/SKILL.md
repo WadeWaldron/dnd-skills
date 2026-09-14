@@ -1,6 +1,9 @@
 ---
 name: roll-dice
-description: A skill for rolling dice using standard notation (e.g., 1d20+5, 2d6, 1d8+1d4). This ensured fair and accurate results by using a Python script instead of LLM-generated numbers.
+description: Rolls dice in standard notation (such as 1d20+5, 2d6, or 1d8+1d4) with a Python script for fair, random results. Use whenever a roll is needed, such as attacks, damage, checks, or random tables, or when the user asks to roll.
+license: CC0-1.0
+compatibility: Requires Python 3
+allowed-tools: Bash(python3 ${CLAUDE_SKILL_DIR}/scripts/*)
 ---
 
 # Roll Dice
@@ -20,12 +23,11 @@ When the skill is executed, it will ask the user for the dice notation if it has
 
 ## Step 2: Roll the Dice
 
-Use the `roll_dice.py` Python script to perform the roll.
+Use the `scripts/roll_dice.py` Python script to perform the roll.
 
-1. Ensure that the `roll_dice.py` script is in the same directory as this skill.
-2. Execute:
+1. Run:
 ```
-python3 roll_dice.py "{dice_notation}"
+python3 ${CLAUDE_SKILL_DIR}/scripts/roll_dice.py "{dice_notation}"
 ```
 3. Capture the output from the script, which will be the total result of the roll.
 4. Tell the user the result of the roll.
