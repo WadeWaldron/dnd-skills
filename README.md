@@ -42,7 +42,14 @@ claude plugin marketplace add WadeWaldron/dnd-skills
 claude plugin install dnd-skills@dnd-skills
 ```
 
-Update later with `claude plugin update dnd-skills`.
+To update, refresh the marketplace first so Claude Code sees the new version, then update the plugin:
+
+```bash
+claude plugin marketplace update dnd-skills
+claude plugin update dnd-skills@dnd-skills
+```
+
+Restart any open Claude Code sessions to load the update. See [CHANGELOG.md](CHANGELOG.md) for what changed.
 
 Skills installed this way are namespaced, so `create-encounter` is invoked as `/dnd-skills:create-encounter`. Claude still selects them automatically based on what you ask for.
 
