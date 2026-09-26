@@ -37,6 +37,7 @@ Files other than `SKILL.md` go in these subfolders, following the [Agent Skills]
 
 - Add new skills to the **Current Skills** list in `README.md`, under the matching category.
 - Bump the version as described in **Versioning**.
+- Add an entry to `CHANGELOG.md` under the new version, written for people who use the plugin.
 
 ## Versioning
 
@@ -56,13 +57,11 @@ The plugin version lives in `version` in `.claude-plugin/plugin.json` and follow
   - Fixing script bugs.
   - Rewording `SKILL.md` instructions or descriptions without changing what the skill does.
 
-While the version is `0.x`, breaking changes bump the minor version and everything else bumps the patch version.
-
 Bump the version once per pull request, using the largest change it contains. Changes that don't reach users (`README.md`, this file, repository tooling) don't need a bump.
 
 ## Document Content: State, Not History
 
-Skill files, templates, and generated campaign documents record the current state of the world, story, or mechanic — never the history of how that state was reached.
+`CHANGELOG.md` is the one file that records history. Skill files, templates, and generated campaign documents record the current state of the world, story, or mechanic — never the history of how that state was reached.
 
 - Do not narrate the process: no "originally we had X, but changed it to Y," no recounting of earlier drafts, rejected ideas, or corrections that happened along the way.
 - Do not justify decisions or explain why something was chosen over an alternative unless that reasoning is itself part of the fiction (e.g. a character's in-world motivation). Record the outcome and move on.

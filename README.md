@@ -75,6 +75,7 @@ Each skill directory contains a `SKILL.md` file that provides specific instructi
 .claude-plugin/    Plugin and marketplace manifests
 skills/            The skills themselves, one directory each
 hooks/             Plugin hooks, such as markdown table alignment
+CHANGELOG.md       What changed in each version
 AGENTS.md          Instructions for agents working in this repository
 CLAUDE.md          Imports AGENTS.md for Claude Code
 ```
