@@ -13,6 +13,7 @@ The repository features a comprehensive suite of tools for campaign management a
 - **[create-dungeon](skills/create-dungeon/SKILL.md)**: Generates structured dungeon layouts with variety and purpose.
 - **[create-encounter](skills/create-encounter/SKILL.md)**: Builds balanced combat encounters from 2024 XP budgets, or checks the difficulty of an existing one.
 - **[create-narrative-hazard](skills/create-narrative-hazard/SKILL.md)**: Generates high-tension, "fiction-first" encounters using Clocks and Position/Effect logic.
+- **[create-npc](skills/create-npc/SKILL.md)**: Builds NPCs with a voice, goals, secrets, connections, and social check DCs.
 - **[create-puzzle](skills/create-puzzle/SKILL.md)**: Creates thematic, in-world environmental challenges with meaningful consequences.
 - **[create-shop](skills/create-shop/SKILL.md)**: Generates a thematic shop with inventory based on settlement size and item scarcity.
 - **[create-trap](skills/create-trap/SKILL.md)**: Designs logical, thematic traps with defined triggers, effects, and sensory telegraphs.
