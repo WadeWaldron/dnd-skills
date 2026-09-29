@@ -57,7 +57,7 @@
   - *In this hazard:* [fiction, including the damage type]
 - **Condition:** The acting character gains blinded, deafened, frightened, poisoned, prone, or restrained until the hazard ends or Condition Removal.
   - *In this hazard:* [fiction, including which condition]
-- **Loss:** The party loses an item, a resource (the lowest available spell slot, one use of a feature, or one Hit Die), an NPC's help, an unrevealed Opportunity, or an unspent Aid.
+- **Loss:** The party loses an item, a resource (the lowest available spell slot, one use of a feature, or one Hit Point Die), an NPC's help, an unrevealed Opportunity, or an unspent Aid.
   - *In this hazard:* [fiction]
 - **Cascading Failure:** The next character to act moves their result one step down the Outcomes table. A successful targeted action becomes a failure.
   - *In this hazard:* [fiction]

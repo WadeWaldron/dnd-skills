@@ -1,14 +1,14 @@
 ---
 name: create-encounter
 description: Creates balanced D&D 5e combat encounters using the 2024 XP budget rules, or checks the difficulty of an existing encounter. Use when the user wants a combat encounter, a fight, a battle, or asks for an XP budget or whether an encounter is too easy or too hard.
-license: CC0-1.0
+license: CC0-1.0 AND CC-BY-4.0
 compatibility: Requires Python 3
 allowed-tools: Bash(python3 ${CLAUDE_SKILL_DIR}/scripts/*)
 ---
 
 # Create Encounter
 
-Builds a combat encounter from a Low, Moderate, or High XP budget (2024 Dungeon Master's Guide), picks thematic monsters, and writes it up with full stat blocks. It can also check the difficulty of an encounter that already exists.
+Builds a combat encounter from a Low, Moderate, or High XP budget (2024 rules, SRD 5.2), picks thematic monsters, and writes it up with full stat blocks. It can also check the difficulty of an encounter that already exists.
 
 All XP math comes from `scripts/encounter_xp.py`. Never calculate budgets, totals, or difficulty by hand.
 

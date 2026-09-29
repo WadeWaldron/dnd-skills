@@ -1,21 +1,21 @@
 ---
 name: difficulty-class
 description: Gives the DC for D&D 5e ability checks, saving throws, and other d20 rolls, from Very Easy (5) to Nearly Impossible (30). Use when setting a DC for a task, a hazard, a trap, or an effect a character has to resist.
-license: CC0-1.0
+license: CC0-1.0 AND CC-BY-4.0
 ---
 
 # Difficulty Class (DC)
 
 To determine the approximate difficulty class (DC) for a skill check, saving throw, or other D20-based check, we can use the following table based on the character's level and the type of effect they are resisting. The DC can be adjusted based on the specific circumstances of the task or effect. In addition, the DC can be increased or decreased slightly to provide more variety to the game.
 
-| Task              | DC |
-|-------------------|----|
-| Very Easy         |  5 |
-| Easy              | 10 |
-| Moderate          | 15 |
-| Hard              | 20 |
-| Very Hard         | 25 |
-| Nearly Impossible | 30 |  
+| Task              | DC  |
+| ----------------- | --- |
+| Very Easy         | 5   |
+| Easy              | 10  |
+| Moderate          | 15  |
+| Hard              | 20  |
+| Very Hard         | 25  |
+| Nearly Impossible | 30  |
 
 **Very Easy**: Most people could accomplish this task with little to no effort. Unless circumstances are unusual, let characters succeed on a DC 5 check without rolling.
 
@@ -28,3 +28,5 @@ To determine the approximate difficulty class (DC) for a skill check, saving thr
 **Very Hard**: A very hard task is typically out of reach for low level characters but becomes more reasonable after level 10 or so.
 
 **Nearly Impossible**: A low level character would have no chance of succeeding on this task, and even a high level character would need proficiency and a very high ability score to have a slight chance of success.
+
+*The DC table is from the SRD. This work includes material from the System Reference Document 5.2 ("SRD 5.2") by Wizards of the Coast LLC, available at https://www.dndbeyond.com/srd. The SRD 5.2 is licensed under the Creative Commons Attribution 4.0 International License, available at https://creativecommons.org/licenses/by/4.0/legalcode.*

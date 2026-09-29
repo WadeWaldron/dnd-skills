@@ -314,7 +314,7 @@
   const left = e("div","col");
   let lw = '<div class="leftwrap">'+
     '<div class="bar"><span class="bv">'+sign(PB)+'</span><span class="bk">Proficiency Bonus</span></div>'+
-    '<div class="bar"><span class="bv">&nbsp;</span><span class="bk">Inspiration</span></div>';
+    '<div class="bar"><span class="bv">&nbsp;</span><span class="bk">Heroic Inspiration</span></div>';
   ABIL.forEach(function(a){
     const key = a[0];
     let rows = '<div class="row sv"><span class="dot'+(has(C.saveProf,key)?" on":"")+'"></span>'+
@@ -332,7 +332,7 @@
       '<div class="askills">'+rows+'</div></div>';
   });
   lw += '<div class="passive" style="margin-top:9px"><div class="v">'+passive+'</div>'+
-        '<div class="k">Passive Wisdom (Perception)'+
+        '<div class="k">Passive Perception'+
         (C.passiveNote ? '<br><span style="color:var(--accent)">'+C.passiveNote+'</span>' : '')+
         '</div></div></div>';
   left.innerHTML = lw +
@@ -366,7 +366,7 @@
     '<div class="box" style="padding:3px 8px 2px;"><div style="height:16px"></div><div class="lbl">Temporary Hit Points</div></div>'+
     '<div class="hdrow">'+
       '<div class="box" style="padding:3px 7px 2px;"><div class="lbl-in" style="text-align:left">Total '+(C.hitDiceTotal||1)+'</div>'+
-        '<div style="font-size:11pt;font-weight:700;">'+C.hitDice+'</div><div class="lbl">Hit Dice</div></div>'+
+        '<div style="font-size:11pt;font-weight:700;">'+C.hitDice+'</div><div class="lbl">Hit Point Dice</div></div>'+
       '<div class="box deaths">'+
         '<div class="dr">Successes <span class="cs"><i class="cir"></i><i class="cir"></i><i class="cir"></i></span></div>'+
         '<div class="dr">Failures <span class="cs"><i class="cir"></i><i class="cir"></i><i class="cir"></i></span></div>'+

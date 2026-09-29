@@ -15,7 +15,7 @@ Traps are functional security measures, workplace hazards, or decaying structure
 1. **Gather the inputs.**
    - Party level.
    - Where the trap is and who built it, or what caused it.
-   - Severity: Nuisance or Deadly.
+   - Severity: Minor, Setback, Dangerous, or Deadly.
    - Where the trap goes: a new document, or a heading inside an existing one (a dungeon room, a location).
    - Read related campaign files (Locations, Organizations, History) for details that shape the trap.
 2. **Copy [assets/trap-template.md](assets/trap-template.md)** into the target document.
@@ -48,12 +48,14 @@ Every trap has a sensory clue the party notices before it triggers, such as shif
 
 ### Severity and Numbers
 
-| Severity | DCs (Detection, Save, Disable) | Attack Bonus |
-| -------- | ------------------------------ | ------------ |
-| Nuisance | 10-15                          | +3 to +5     |
-| Deadly   | 15-20                          | +6 to +9     |
+| Severity  | DCs (Detection, Save, Disable) | Attack Bonus |
+| --------- | ------------------------------ | ------------ |
+| Minor     | 10                             | +3           |
+| Setback   | 10-12                          | +3 to +5     |
+| Dangerous | 13-15                          | +6 to +8     |
+| Deadly    | 16-18                          | +9 to +11    |
 
-Damage comes from the **damage-severity** skill's table for the party level and severity. Use one of the dice options it lists.
+Damage uses one of the dice options from the **damage-severity** skill's table for the party level and severity.
 
 ### Detection
 
@@ -67,7 +69,7 @@ One or two checks, using Wisdom (Perception) or Intelligence (Investigation). Ea
   - **Condition:** a condition, who it affects, and how it ends.
   - **Environmental Complication:** a lasting change to the area, such as difficult terrain, heavy obscurement, or a sealed exit.
   - **Resource Attrition:** a specific loss, such as a destroyed shield, 1d4 ruined rations, or an expended spell slot.
-  - **Alarm:** who is alerted and what they do, such as the next encounter starting with the party surprised.
+  - **Alarm:** who is alerted and what they do, such as the next encounter starting with the party surprised (Disadvantage on Initiative).
 
 ### Countermeasures
 

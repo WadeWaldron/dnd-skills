@@ -2,6 +2,18 @@
 
 All notable changes to the `dnd-skills` plugin. Versions follow [Semantic Versioning](https://semver.org).
 
+## [1.1.0] - 2026-09-28
+
+### Added
+- `damage-severity` has a new damage table: four severities (Minor, Setback, Dangerous, and Deadly) in two-level steps, each with an average and several dice options, and never more than 20 dice. It comes with matching save DCs and attack bonuses, and examples for each severity.
+
+### Changed
+- `create-trap` and `create-puzzle` use the four new severities and their numbers. Trap and puzzle documents that use the Nuisance severity no longer pass their validators; they still work at the table.
+- Game content copied from published books now comes only from the D&D System Reference Documents (SRD 5.1 and 5.2), with the required attribution. See `NOTICE.md`.
+- `create-treasure` describes typical coins, gems, art, and magic items per Challenge tier in short summaries instead of roll tables.
+- 2024 rules wording: surprise means Disadvantage on Initiative in `create-puzzle` and `create-trap`, narrative hazards use Hit Point Dice, and the character sheet shows Heroic Inspiration, Passive Perception, and Hit Point Dice. Narrative hazards written with "Hit Die" no longer pass their validator.
+- `create-shop` uses the 2024 (SRD 5.2) equipment, prices, and services. New items include equipment packs, arcane focuses, holy symbols, firearms, saddles, ships, lodging and meals by quality, hirelings, and spellcasting services. Items that are no longer part of the rules, such as the abacus and hourglass, are gone. Magic items are priced by rarity.
+
 ## [1.0.0] - 2026-09-26
 
 ### Added

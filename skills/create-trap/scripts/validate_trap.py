@@ -19,16 +19,32 @@ DAMAGE_TYPES = [
     "piercing", "poison", "psychic", "radiant", "slashing", "thunder",
 ]
 
-DC_RANGE = {"Nuisance": (10, 15), "Deadly": (15, 20)}
-ATTACK_RANGE = {"Nuisance": (3, 5), "Deadly": (6, 9)}
-
-# Damage Severity by Level (2024 Dungeon Master's Guide; see the damage-severity skill)
-DAMAGE_DICE = [
-    (range(1, 5), {"Nuisance": ["1d10", "2d4", "1d8"], "Deadly": ["2d10", "3d6", "4d4"]}),
-    (range(5, 11), {"Nuisance": ["2d10", "3d6", "4d4"], "Deadly": ["4d10", "6d6", "5d8"]}),
-    (range(11, 17), {"Nuisance": ["4d10", "6d6", "5d8"], "Deadly": ["10d10", "15d6", "8d12"]}),
-    (range(17, 21), {"Nuisance": ["10d10", "15d6", "8d12"], "Deadly": ["18d10", "28d6", "15d12"]}),
-]
+# Save DCs, attack bonuses, and damage dice by severity (see the damage-severity skill).
+DC_RANGE = {"Minor": (10, 10), "Setback": (10, 12), "Dangerous": (13, 15), "Deadly": (16, 18)}
+ATTACK_RANGE = {"Minor": (3, 3), "Setback": (3, 5), "Dangerous": (6, 8), "Deadly": (9, 11)}
+# Dice options for levels 1-2, 3-4, ... 19-20.
+DAMAGE_DICE = {
+    "Minor": [
+        ["1d4", "1d6"], ["1d8", "1d6"], ["1d10", "1d8", "2d4"], ["1d12", "2d6"], ["2d10", "2d8", "3d6"],
+        ["2d12", "3d8", "4d6"], ["3d10", "4d8", "5d6"], ["4d10", "5d8", "6d6"], ["5d10", "6d8", "8d6"],
+        ["6d10", "7d8", "9d6"],
+    ],
+    "Setback": [
+        ["1d10", "1d8", "2d4"], ["1d12", "2d6"], ["2d10", "2d8", "3d6"], ["2d12", "3d8", "4d6"],
+        ["3d10", "4d8", "5d6"], ["4d10", "5d8", "6d6"], ["5d10", "6d8", "8d6"], ["6d10", "8d8", "10d6"],
+        ["7d12", "10d8", "13d6"], ["10d10", "12d8", "16d6"],
+    ],
+    "Dangerous": [
+        ["2d10", "2d8", "3d6"], ["2d12", "3d8", "4d6"], ["3d12", "4d8", "6d6"], ["5d10", "6d8", "8d6"],
+        ["6d10", "8d8", "10d6"], ["7d12", "10d8", "13d6"], ["10d10", "12d8", "16d6"],
+        ["11d12", "16d8", "20d6"], ["13d12", "19d8", "8d20"], ["18d10", "15d12", "10d20"],
+    ],
+    "Deadly": [
+        ["3d12", "4d8", "5d6"], ["5d10", "6d8", "8d6"], ["6d12", "9d8", "11d6"], ["9d10", "11d8", "14d6"],
+        ["10d12", "14d8", "19d6"], ["12d12", "18d8", "8d20"], ["17d10", "15d12", "9d20"],
+        ["20d10", "17d12", "10d20"], ["19d12", "12d20"], ["20d12", "13d20"],
+    ],
+}
 
 HEADING = re.compile(r"^(#+)\s+(.*?)\s*#*\s*$")
 PLACEHOLDER = re.compile(r"\[[^\]]*\](?!\()")
@@ -96,10 +112,7 @@ def find_section(lines, title):
 
 
 def damage_options(level, severity):
-    for levels, options in DAMAGE_DICE:
-        if level in levels:
-            return options[severity]
-    return []
+    return DAMAGE_DICE[severity][(level - 1) // 2]
 
 
 def validate(section):
@@ -132,7 +145,7 @@ def validate(section):
         if header["Severity"][1] in DC_RANGE:
             severity = header["Severity"][1]
         else:
-            error(header["Severity"][0], "Severity must be Nuisance or Deadly")
+            error(header["Severity"][0], "Severity must be Minor, Setback, Dangerous, or Deadly")
     if "Party Level" in header:
         value = header["Party Level"][1]
         if value.isdigit() and 1 <= int(value) <= 20:

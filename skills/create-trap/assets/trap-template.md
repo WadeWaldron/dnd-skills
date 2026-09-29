@@ -3,7 +3,7 @@
 *[One or two sentences: what the trap is and why it is here.]*
 
 - **Purpose:** [Intentional Security, Environmental Hazard, Execution, Alarm, or Deterrent]
-- **Severity:** [Nuisance or Deadly]
+- **Severity:** [Minor, Setback, Dangerous, or Deadly]
 - **Party Level:** [1-20]
 
 ### Telegraph

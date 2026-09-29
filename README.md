@@ -84,6 +84,11 @@ Each skill directory contains a `SKILL.md` file that provides specific instructi
 skills/            The skills themselves, one directory each
 hooks/             Plugin hooks, such as markdown table alignment
 CHANGELOG.md       What changed in each version
+NOTICE.md          Licensing and attribution for SRD material
 AGENTS.md          Instructions for agents working in this repository
 CLAUDE.md          Imports AGENTS.md for Claude Code
 ```
+
+## License
+
+The skills are released under [CC0 1.0](LICENSE). Material from the D&D System Reference Documents is licensed under CC-BY-4.0 and credited in [NOTICE.md](NOTICE.md). This plugin is unofficial and is not affiliated with or endorsed by Wizards of the Coast.

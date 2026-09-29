@@ -15,7 +15,7 @@ Use detailed knowledge of the D&D 5e rules, including the 2024 rules, when writi
 
 - Each skill lives in `skills/<skill-name>/` with a `SKILL.md` at its root.
 - `SKILL.md` starts with frontmatter holding `name` and `description`. `name` matches the directory name, in kebab-case.
-- The frontmatter also has `license: CC0-1.0`. Skills with scripts add `compatibility: Requires Python 3`, and skills with other environment needs describe them in `compatibility`.
+- The frontmatter also has `license: CC0-1.0`, or `license: CC0-1.0 AND CC-BY-4.0` when the skill includes SRD material. Skills with scripts add `compatibility: Requires Python 3`, and skills with other environment needs describe them in `compatibility`.
 - Skills with scripts add `allowed-tools: Bash(python3 ${CLAUDE_SKILL_DIR}/scripts/*)`, so Claude Code runs the skill's own scripts without asking for approval. The rule only matches commands written with `${CLAUDE_SKILL_DIR}`.
 - The `description` is what an agent uses to decide whether to load the skill. Say what the skill does and when to use it, including phrases a user is likely to type.
 - Keep `SKILL.md` focused on the workflow. Move long reference material, templates, and data into separate files and link to them with relative paths.
@@ -24,6 +24,12 @@ Use detailed knowledge of the D&D 5e rules, including the 2024 rules, when writi
 - Scripts use only the Python 3 standard library.
 - Skills can call on other skills by name (for example, `create-encounter` uses `lookup-creatures` and `customize-creature`). Keep each skill usable on its own.
 - Skills can read campaign folders for context (NPCs, Locations, Monsters, and so on). The folder names are defined by `initialize-campaign`.
+
+### Game Content Sources
+
+- Rules text, tables, and data copied from a published source must come from SRD 5.1 or SRD 5.2. Material from the Player's Handbook, Dungeon Master's Guide, Monster Manual, or other books is written as original guidance instead of copied.
+- A file with SRD material carries the matching SRD attribution line, and the file is listed in `NOTICE.md`.
+- Do not use Wizards of the Coast trademarks or logos in a way that suggests the plugin is official.
 
 ### Skill Folders
 

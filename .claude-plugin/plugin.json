@@ -1,11 +1,11 @@
 {
   "name": "dnd-skills",
   "description": "Agent Skills for building, running, and playing D&D 5e campaigns.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": {
     "name": "Wade Waldron"
   },
   "homepage": "https://github.com/WadeWaldron/dnd-skills",
   "repository": "https://github.com/WadeWaldron/dnd-skills",
-  "license": "CC0-1.0"
+  "license": "CC0-1.0 AND CC-BY-4.0"
 }

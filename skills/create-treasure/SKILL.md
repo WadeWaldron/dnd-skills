@@ -33,14 +33,34 @@ Use the party's level to determine the "Weight" of the treasure.
 
 ## Step 3: Architecture of Discovery
 Treasure shouldn't always be "free."
-1.  **The Barrier:** Is it locked (DC 15 Thieves' Tools), trapped (DC 15 investigation/perception), or hidden (DC 15 Investigation)?
-2.  **The Identity:** Use the `identify` spell or a relevant skill check (Arcana for magic, History for art, Nature for poisons/herbs) to understand unusual items.
+1.  **The Barrier:** Is it locked (DC 15 Dexterity (Thieves' Tools)), trapped (DC 15 Wisdom (Perception) or Intelligence (Investigation)), or hidden (DC 15 Intelligence (Investigation))?
+2.  **The Identity:** Use the *Identify* spell or a relevant skill check (Arcana for magic, History for art, Nature for poisons/herbs) to understand unusual items.
 
 ## Step 4: Scale the Reward
-Use the [treasure tables](references/treasure-tables.md) or the following guidelines:
-- **Levels 1-4:** 1st-level scrolls/potions, gems (10-50 gp).
-- **Levels 5-10:** 2nd/3rd-level scrolls, +1 weapons/armor, gems (100-500 gp).
-- **Levels 11+:** Rare+ items, major art objects (1,000+ gp).
+
+Scale the reward to the Challenge of the creatures that owned it. Values are rough totals; vary them and mix coin types to fit the owner.
+
+### Individual Treasure
+
+| Challenge | Typical Value                                      |
+| --------- | -------------------------------------------------- |
+| 0-4       | A handful of copper and silver, up to about 20 gp  |
+| 5-10      | A few dozen to a few hundred gp, some platinum     |
+| 11-16     | A few hundred to about 2,000 gp, often in platinum |
+| 17+       | A few thousand gp, mostly in platinum              |
+
+Individual treasure is almost always coins, with the odd trinket. It rarely includes a magic item.
+
+### Treasure Hoards
+
+| Challenge | Coins                               | Gems and Art                                  | Magic Items                                                            |
+| --------- | ----------------------------------- | --------------------------------------------- | ---------------------------------------------------------------------- |
+| 0-4       | About 100-300 gp in mixed coin      | A few gems (10-50 gp each) or art (25 gp)     | About half of hoards: 1-6 Common or Uncommon items, mostly consumables |
+| 5-10      | About 2,000-4,000 gp                | Several gems (50-250 gp) or art (25-750 gp)   | Most hoards: a few Uncommon items, sometimes one Rare                  |
+| 11-16     | About 15,000-30,000 gp              | Several gems or art (250-1,000 gp each)       | Most hoards: Rare items, sometimes one Very Rare                       |
+| 17+       | 100,000 gp or more, mostly platinum | Gems (1,000-5,000 gp) or art (2,500-7,500 gp) | Most hoards: Very Rare items, sometimes one Legendary                  |
+
+Consumables such as potions and spell scrolls make up most low-tier items. Permanent items, such as +1 weapons and armor, start appearing in the 5-10 tier.
 
 ## Terminology
 
@@ -56,7 +76,3 @@ Use the [treasure tables](references/treasure-tables.md) or the following guidel
 - **What it is:** A significant collection of relative wealth stored in a chest, vault, or lair.
 - **When to use:** Use for major milestones, bosses, or at the end of a dungeon.
 - **Contents:** Significant currency, gems/art objects, and magic items.
-
-## Treasure Tables
-
-Individual treasure and treasure hoard tables by Challenge are in [references/treasure-tables.md](references/treasure-tables.md).
