@@ -24,13 +24,29 @@ DAMAGE_TYPES = [
     "piercing", "poison", "psychic", "radiant", "slashing", "thunder",
 ]
 
-# Damage Severity by Level (2024 Dungeon Master's Guide; see the damage-severity skill)
-DAMAGE_DICE = [
-    (range(1, 5), {"Nuisance": ["1d10", "2d4", "1d8"], "Deadly": ["2d10", "3d6", "4d4"]}),
-    (range(5, 11), {"Nuisance": ["2d10", "3d6", "4d4"], "Deadly": ["4d10", "6d6", "5d8"]}),
-    (range(11, 17), {"Nuisance": ["4d10", "6d6", "5d8"], "Deadly": ["10d10", "15d6", "8d12"]}),
-    (range(17, 21), {"Nuisance": ["10d10", "15d6", "8d12"], "Deadly": ["18d10", "28d6", "15d12"]}),
-]
+# Damage dice by severity for levels 1-2, 3-4, ... 19-20 (see the damage-severity skill).
+DAMAGE_DICE = {
+    "Minor": [
+        ["1d4", "1d6"], ["1d8", "1d6"], ["1d10", "1d8", "2d4"], ["1d12", "2d6"], ["2d10", "2d8", "3d6"],
+        ["2d12", "3d8", "4d6"], ["3d10", "4d8", "5d6"], ["4d10", "5d8", "6d6"], ["5d10", "6d8", "8d6"],
+        ["6d10", "7d8", "9d6"],
+    ],
+    "Setback": [
+        ["1d10", "1d8", "2d4"], ["1d12", "2d6"], ["2d10", "2d8", "3d6"], ["2d12", "3d8", "4d6"],
+        ["3d10", "4d8", "5d6"], ["4d10", "5d8", "6d6"], ["5d10", "6d8", "8d6"], ["6d10", "8d8", "10d6"],
+        ["7d12", "10d8", "13d6"], ["10d10", "12d8", "16d6"],
+    ],
+    "Dangerous": [
+        ["2d10", "2d8", "3d6"], ["2d12", "3d8", "4d6"], ["3d12", "4d8", "6d6"], ["5d10", "6d8", "8d6"],
+        ["6d10", "8d8", "10d6"], ["7d12", "10d8", "13d6"], ["10d10", "12d8", "16d6"],
+        ["11d12", "16d8", "20d6"], ["13d12", "19d8", "8d20"], ["18d10", "15d12", "10d20"],
+    ],
+    "Deadly": [
+        ["3d12", "4d8", "5d6"], ["5d10", "6d8", "8d6"], ["6d12", "9d8", "11d6"], ["9d10", "11d8", "14d6"],
+        ["10d12", "14d8", "19d6"], ["12d12", "18d8", "8d20"], ["17d10", "15d12", "9d20"],
+        ["20d10", "17d12", "10d20"], ["19d12", "12d20"], ["20d12", "13d20"],
+    ],
+}
 
 HEADING = re.compile(r"^(#+)\s+(.*?)\s*#*\s*$")
 PLACEHOLDER = re.compile(r"\[[^\]]*\](?!\()")
@@ -38,7 +54,7 @@ FIELD = re.compile(r"^- \*\*(.+?):\*\*\s*(.*)$")
 FAILURE = re.compile(r"^\s+- \*On a failure:\*\s*(.*)$")
 CHECK = re.compile(rf"^DC (\d+) ({'|'.join(ABILITIES)}) \((.+?)\), (Easy|Moderate|Hard)$")
 MAGIC = re.compile(r"^- \*([^*]+)\*:\s*\S")
-DAMAGE_COST = re.compile(rf"^(\d+d\d+) ({'|'.join(DAMAGE_TYPES)}) damage \((Nuisance|Deadly)\)")
+DAMAGE_COST = re.compile(rf"^(\d+d\d+) ({'|'.join(DAMAGE_TYPES)}) damage \((Minor|Setback|Dangerous|Deadly)\)")
 
 
 class Section:
@@ -106,10 +122,7 @@ def checks_with_failures(section):
 
 
 def damage_options(level, severity):
-    for levels, options in DAMAGE_DICE:
-        if level in levels:
-            return options[severity]
-    return []
+    return DAMAGE_DICE[severity][(level - 1) // 2]
 
 
 def validate(section):
@@ -147,15 +160,18 @@ def validate(section):
         elif kind == "Damage":
             damage = DAMAGE_COST.match(detail)
             if not damage:
-                error(number, "Damage cost must start like '2d10 fire damage (Nuisance)'")
+                error(number, "Damage cost must start like '2d10 fire damage (Dangerous)'")
             elif level:
                 options = damage_options(level, damage.group(3))
                 if damage.group(1) not in options:
                     error(number, f"{damage.group(3)} damage at level {level} must be one of {options}")
         elif kind == "Exhaustion" and not re.search(r"\d+ levels? of exhaustion", detail):
             error(number, "Exhaustion cost must say how many levels of exhaustion")
-        elif kind == "Alert" and "surprised" not in detail.lower() and "+2 AC" not in detail:
-            error(number, "Alert cost must say the party is surprised or the enemies gain +2 AC in the next encounter")
+        elif kind == "Alert" and not any(
+            phrase in detail.lower() for phrase in ("surprised", "disadvantage on initiative", "+2 ac")
+        ):
+            error(number, "Alert cost must say the party is surprised (Disadvantage on Initiative) "
+                          "or the enemies gain +2 AC in the next encounter")
         elif kind == "High Cost Path" and not re.search(r"\b(Low|Moderate)\b", detail):
             error(number, "High Cost Path must name a Low or Moderate encounter")
 

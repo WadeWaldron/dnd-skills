@@ -1,7 +1,7 @@
 ---
 name: create-shop
 description: Creates a D&D 5e shop with a name, proprietor, pricing based on settlement size, and stock quantities from scarcity modifiers. Use when the user wants a shop, a merchant, a market stall, or to know what gear is for sale in a town.
-license: CC0-1.0
+license: CC0-1.0 AND CC-BY-4.0
 ---
 
 # Create Shop
@@ -11,22 +11,22 @@ This skill provides a structured workflow for generating a merchant's inventory 
 ## Step 1: Set Settlement Die Type
 Determine the size of the settlement where the shop is located. This sets the **Settlement Die** used for item availability and quantity.
 
-| Settlement Type     | Settlement Die | Description                                                |
-| :------------------ | :------------- | :--------------------------------------------------------- |
-| **Outpost/Village** | 1d4            | Isolated, limited supplies, local focus.                   |
-| **Town**            | 1d8            | Standard market with common goods.                         |
-| **City**            | 1d12           | Diverse economy, rare items are occasionally found.        |
-| **Metropolis**      | 1d20           | Trade hub where almost anything can be acquired.           |
+| Settlement Type     | Settlement Die | Description                                         |
+| :------------------ | :------------- | :-------------------------------------------------- |
+| **Outpost/Village** | 1d4            | Isolated, limited supplies, local focus.            |
+| **Town**            | 1d8            | Standard market with common goods.                  |
+| **City**            | 1d12           | Diverse economy, rare items are occasionally found. |
+| **Metropolis**      | 1d20           | Trade hub where almost anything can be acquired.    |
 
 ## Step 2: Determine Pricing
 
 Use the `roll-dice` skill to roll the **Settlement Die** to determine the pricing for the shop. The result of the roll will be used to adjust the prices of all items in the shop's inventory according to the following table:
 
-| Roll Result | Price Modifier | Description                                                         |
-| :---------- | :------------- | :------------------------------------------------------------------ |
-| **1-3**     | 110% Cost      | **Scarcity Pricing:** Low supply or high demand increases the cost. |
-| **4-9**     | 100% Cost      | **Standard Pricing:** The fair market value listed in the tables.   |
-| **10+**     | 90% Cost       | **Competitive Pricing:** High volume and competition lower the cost.|
+| Roll Result | Price Modifier | Description                                                          |
+| :---------- | :------------- | :------------------------------------------------------------------- |
+| **1-3**     | 110% Cost      | **Scarcity Pricing:** Low supply or high demand increases the cost.  |
+| **4-9**     | 100% Cost      | **Standard Pricing:** The fair market value listed in the tables.    |
+| **10+**     | 90% Cost       | **Competitive Pricing:** High volume and competition lower the cost. |
 
 *Note: Since small settlements (d4/d8) rarely roll 10+, they almost never offer competitive pricing, whereas cities (d12/d20) frequently do.*
 

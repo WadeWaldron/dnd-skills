@@ -16,7 +16,11 @@ import sys
 
 DIFFICULTIES = ["low", "moderate", "high"]
 
-# XP budget per character by level (2024 Dungeon Master's Guide)
+# XP budget per character by level, from the SRD.
+# This work includes material from the System Reference Document 5.2 ("SRD 5.2") by Wizards of the 
+# Coast LLC, available at https://www.dndbeyond.com/srd. The SRD 5.2 is licensed under the Creative 
+# Commons Attribution 4.0 International License, available at 
+# https://creativecommons.org/licenses/by/4.0/legalcode.
 XP_BUDGET_PER_CHARACTER = {
     1: (50, 75, 100),
     2: (100, 150, 200),

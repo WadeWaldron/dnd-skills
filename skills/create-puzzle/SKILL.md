@@ -50,10 +50,10 @@ Each check is labeled Easy (DC 10), Moderate (DC 15), or Hard (DC 20), matching 
 
 Every approach and the practical solution have one cost, which starts with its type. Each cost has exact mechanics:
 
-- **Damage:** dice, a damage type, and severity, such as `2d10 fire damage (Nuisance)`. Use the dice from the **damage-severity** skill's table for the party level and severity. Say who takes it.
+- **Damage:** dice, a damage type, and severity, such as `2d10 fire damage (Dangerous)`, where severity is Minor, Setback, Dangerous, or Deadly. Use the dice from the **damage-severity** skill's table for the party level and severity. Say who takes it.
 - **Exhaustion:** how many levels of exhaustion, and who gains them.
 - **Resource Loss:** exactly what is lost, such as a broken shield, 1d4 ruined rations, or 50 feet of rope.
-- **Alert:** the next encounter starts with the party surprised or the enemies gaining +2 AC for the first round.
+- **Alert:** the next encounter starts with the party surprised (Disadvantage on Initiative) or the enemies gaining +2 AC for the first round.
 - **Tactical Disadvantage:** the exact situation the party arrives in, such as split up, prone, or one character isolated on the far side.
 - **High Cost Path:** the party takes a longer route that adds a Low or Moderate encounter, built with the **create-encounter** skill.
 

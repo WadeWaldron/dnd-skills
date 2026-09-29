@@ -1,7 +1,7 @@
 ---
 name: lookup-creatures
 description: Searches the D&D 5e monster list by XP, type, environment, and size, and returns full stat blocks by name. Use when the user wants monster ideas, a stat block, or creatures that fit a theme or XP budget.
-license: CC0-1.0
+license: CC0-1.0 AND CC-BY-4.0
 compatibility: Requires Python 3
 allowed-tools: Bash(python3 ${CLAUDE_SKILL_DIR}/scripts/*)
 ---
